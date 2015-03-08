@@ -1,22 +1,43 @@
 # see http://inti.sourceforge.net/tutorial/libinti/autotoolsproject.html
 # and http://linux.blogs.com.np/2008/04/18/using-automake-and-autoconf-with-c/comment-page-1/
+# and http://www.bioinf.uni-freiburg.de/~mmann/HowTo/automake.html
 
-AC_INIT(src/jprefix.cc)
-
-
+# set variables
 PACKAGE=jprefix
-VERSION=0.1.0
 
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+# initial info about project
+#AC_INIT(src/jprefix.cc)
+AC_INIT([jprefix],[0.1.0],[joshr])
+AC_CONFIG_SRCDIR([src/jprefix.cc])
 
-JPREFIX_REQUIRED_VERSION=1.0.7
-#PKG_CHECK_MODULES(INTI, inti-1.0 >= $INTI_REQUIRED_VERSION)
-#AC_SUBST(INTI_CFLAGS)
-#AC_SUBST(INTI_LIBS)
-
-AC_PROG_CC
+# check for C++ preprocessor and compiler
+#AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_CXXCPP
 
-AC_PROG_INSTALL
+# automake initialization (mandatory) including a check for automake API version >= 1.9
+AM_INIT_AUTOMAKE([1.9])
 
-AC_OUTPUT(Makefile src/Makefile)
+# use the C++ compiler for following checks
+AC_LANG([C++])
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([string])
+AC_CHECK_HEADERS([iostream])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_SIZE_T
+
+# distribute additional compiler and linker flags among Makefiles
+# --> set and change these variables instead of CXXFLAGS or LDFLAGS (for user only)
+AC_SUBST([AM_CXXFLAGS])
+AC_SUBST([AM_LDFLAGS])
+
+# files to generate via autotools (prepare .am or .in source files)
+AC_CONFIG_FILES([Makefile])
+#AC_CONFIG_FILES([src/Makefile])
+
+# finally this generates the Makefiles etc. for the build
+AC_OUTPUT
+
