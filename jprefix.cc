@@ -6,7 +6,8 @@
 #include <getopt.h>    /* for getopt_long() */
 #include <string>       /* for std::string */
 #include <iostream>     /* for std::istream, cin, cout */
-#include <vector>     /* for vector<type> */
+#include <vector>     /* for std::vector<type> */
+#include <fstream>     /* for std::ifstream */
         
 #include "jprefix.h"
 
@@ -16,8 +17,17 @@ main(int argc, char **argv)
     JPrefixOptions opts = parse_options( argc, argv);    // this may exit with error or not, with --help-like options. returns opts if successful
     //std::cout << "text is " << opts.text << std::endl;
 
-    int bytes = copy_stream_prefixed( std::cin, opts );
-    //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
+    int bytes = 0;
+    if (opts.filenames.size() == 0) {
+        bytes += copy_stream_prefixed( std::cin, opts );
+        //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
+    } else {
+        for (int i=0; i < opts.filenames.size(); i++) {
+            std::ifstream ifs;
+            ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
+            //bytes += copy_stream_prefixed( ifs, opts );
+        }
+    }
 
     exit(EXIT_SUCCESS);
 }
@@ -46,7 +56,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
     int c;
     //int digit_optind = 0;   // used invisibly
     
-    JPrefixOptions opts;
+    JPrefixOptions opts;    // sets all members to 0
 
     while (1) {
         //int this_option_optind = optind ? optind : 1;   // where does 'optint' come from

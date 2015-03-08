@@ -8,6 +8,8 @@ struct JPrefixOptions {
     std::string hostname;   // hostname of machine
     int show_hostname;      // should we show hostname
     std::vector<std::string> filenames; // filenames to show
+
+    JPrefixOptions() : show_hostname(0) {}
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
