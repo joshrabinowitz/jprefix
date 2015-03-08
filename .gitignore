@@ -4,6 +4,13 @@ autom4te.cache
 configure
 .gitignore
 
+autogen.sh
+compile
+config.status
+depcomp
+install-sh
+missing
+
 .*.swp
 .*.swo
 
