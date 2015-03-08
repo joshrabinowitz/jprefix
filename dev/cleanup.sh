@@ -12,6 +12,7 @@
 rm -f aclocal.m4 configure config.log config.status
 rm -rf autom4te.cache
 rm -f depcomp install-sh compile missing
-rm -f Makefile Makefile.in
+rm -f Makefile Makefile.in  
+rm -f jprefix.o
 
 
