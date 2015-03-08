@@ -13,7 +13,7 @@
 int
 main(int argc, char **argv)
 {
-    PrefixOptions opts = parse_options( argc, argv);    // this may exit with error or not, with --help-like options. returns opts if successful
+    JPrefixOptions opts = parse_options( argc, argv);    // this may exit with error or not, with --help-like options. returns opts if successful
     //std::cout << "text is " << opts.text << std::endl;
 
     int bytes = copy_stream_prefixed( std::cin, opts );
@@ -22,7 +22,7 @@ main(int argc, char **argv)
     exit(EXIT_SUCCESS);
 }
 
-int copy_stream_prefixed (std::istream &in, PrefixOptions opts) 
+int copy_stream_prefixed (std::istream &in, JPrefixOptions opts) 
 {
     std::string line;
     int len = 0;
@@ -42,11 +42,11 @@ int copy_stream_prefixed (std::istream &in, PrefixOptions opts)
     return len;
 }
 
-PrefixOptions parse_options( int argc, char **argv) {
+JPrefixOptions parse_options( int argc, char **argv) {
     int c;
     //int digit_optind = 0;   // used invisibly
     
-    PrefixOptions opts;
+    JPrefixOptions opts;
 
     while (1) {
         //int this_option_optind = optind ? optind : 1;   // where does 'optint' come from
@@ -81,7 +81,7 @@ PrefixOptions parse_options( int argc, char **argv) {
             break;
 
         case 'h':   //  hostname
-            std::cout << "jprefix: verbose: show_hostname set to on\n";
+            //std::cout << "jprefix: verbose: show_hostname set to on\n";
             opts.show_hostname = 1;
             break;
 
@@ -101,14 +101,10 @@ PrefixOptions parse_options( int argc, char **argv) {
         while (optind < argc) {
             opts.filenames.push_back( argv[optind++] );
         }
-        std::cout << myjoin(" ", opts.filenames) << std::endl;
+        std::cout << "jprefix: args: " << myjoin(" ", opts.filenames) << std::endl;
     }
     
-    // GET HOSTNAME
-    char hostname[1024] = {0};  // {0} means all bits set to 0 in whole array
-    gethostname( hostname, 1023 );
-    opts.hostname = hostname;
-    std::cout << "hostname is " << hostname << std::endl;
+    opts.hostname = get_hostname();
 
     return opts;
 }
@@ -117,11 +113,20 @@ std::string myjoin( std::string joiner, std::vector<std::string> array )
 {
     std::string str = "";
     for(int i=0; i<array.size(); i++) {
-        std::cout << "jprefix: verbose: appending " << array[i] << std::endl;
+        //std::cout << "jprefix: verbose: appending " << array[i] << std::endl;
         str += array[i];
         if(i < array.size() - 1) {
             str += joiner;
         }
     }
     return str;
+}
+
+std::string get_hostname() 
+{
+    // GET HOSTNAME
+    char hostname[1024] = {0};  // {0} means all bits set to 0 in whole array
+    gethostname( hostname, 1023 );
+    //std::cout << "hostname is " << hostname << std::endl;
+    return std::string(hostname);
 }
