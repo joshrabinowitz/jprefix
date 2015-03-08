@@ -20,14 +20,14 @@ main(int argc, char **argv)
     int bytes = 0;
     if (opts.filenames.size() == 0) {
         bytes += copy_stream_prefixed( std::cin, opts );
-        //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
     } else {
         for (int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
             ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
-            //bytes += copy_stream_prefixed( ifs, opts );
+            bytes += copy_stream_prefixed( ifs, opts );
         }
     }
+    //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
 
     exit(EXIT_SUCCESS);
 }
