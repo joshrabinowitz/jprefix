@@ -4,6 +4,7 @@ autom4te.cache
 configure
 .gitignore
 
+# build artifacts
 compile
 config.status
 depcomp
@@ -14,6 +15,10 @@ missing
 Makefile
 Makefile.in
 
+# binary created
+jprefix
+
+# vim swapfiles
 .*.swp
 .*.swo
 
