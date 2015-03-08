@@ -10,6 +10,10 @@ depcomp
 install-sh
 missing
 
+.deps
+Makefile
+Makefile.in
+
 .*.swp
 .*.swo
 
