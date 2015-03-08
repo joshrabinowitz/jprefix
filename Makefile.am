@@ -1,5 +1,5 @@
 # see http://inti.sourceforge.net/tutorial/libinti/autotoolsproject.html
-SUBDIRS=src
+#SUBDIRS=src
 
 bin_PROGRAMS = jprefix
 
