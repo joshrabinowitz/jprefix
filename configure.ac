@@ -17,6 +17,8 @@ AC_PROG_CXXCPP
 
 # automake initialization (mandatory) including a check for automake API version >= 1.9
 AM_INIT_AUTOMAKE([1.9])
+#  below means "software does not conform to the typical gnu standards, and thus omitting README is not an error"
+AM_INIT_AUTOMAKE([foreign])
 
 # use the C++ compiler for following checks
 AC_LANG([C++])
