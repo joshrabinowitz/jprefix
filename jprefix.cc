@@ -65,6 +65,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
         static struct option long_options[] = {
             {"text",     required_argument, NULL,  't' },
             {"hostname", no_argument,       NULL,  'h' },
+            {"verbose",  no_argument,       NULL,  'v' },
             //{"add",     required_argument, 0,  0 },
             //{"append",  no_argument,       0,  0 },
             //{"delete",  required_argument, 0,  0 },
@@ -74,7 +75,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {0,         0,                 0,  0 }
         };
 
-       c = getopt_long(argc, argv, "th", // "abc:d:012", // we're not sure what "t" means here, nor "abc:d:012"
+       c = getopt_long(argc, argv, "thv", // "abc:d:012", // we're not sure what "t" means here, nor "abc:d:012"
                  long_options, &option_index);
         if (c == -1)
             break;
@@ -95,6 +96,11 @@ JPrefixOptions parse_options( int argc, char **argv) {
             opts.show_hostname = 1;
             break;
 
+        case 'v':   //  verbose
+            //std::cout << "jprefix: verbose: verbose set to on\n";
+            opts.verbose = 1;
+            break;
+
         case '?':
             std::cout << ( "jprefix: SHOW USAGE\n" );
             exit(0);
@@ -107,11 +113,13 @@ JPrefixOptions parse_options( int argc, char **argv) {
     }
 
    if (optind < argc) {
-        printf("non-option ARGV-elements: ");
+        //printf("non-option ARGV-elements: ");
         while (optind < argc) {
             opts.filenames.push_back( argv[optind++] );
         }
-        std::cout << "jprefix: args: " << myjoin(" ", opts.filenames) << std::endl;
+        if (opts.verbose) {
+            std::cout << "jprefix: args: " << myjoin(" ", opts.filenames) << std::endl;
+        }
     }
     
     opts.hostname = get_hostname();
