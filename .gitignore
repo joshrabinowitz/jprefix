@@ -4,8 +4,8 @@ autom4te.cache
 configure
 .gitignore
 
-./*.swp
-./*.swo
+.*.swp
+.*.swo
 
 # Compiled Object files
 *.slo
