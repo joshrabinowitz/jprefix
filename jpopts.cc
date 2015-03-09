@@ -1,6 +1,8 @@
 #include "jpopts.h"
 #include <getopt.h>    /* for getopt_long() */
+#include <stdlib.h>    /* for exit() */
 #include <iostream>    /* for std::istream, cin, cout */
+#include <stdio.h>     /* for printf */
 
 #include "jpstrutils.h" /* for get_hostname() */
 
