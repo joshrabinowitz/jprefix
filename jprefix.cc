@@ -183,7 +183,7 @@ const std::string get_date_time()
     return buf;
 }
 
-// Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuu
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuu
 const std::string get_date_utime()
 {
     timeval curTime;
