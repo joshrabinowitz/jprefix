@@ -86,7 +86,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
                 //printf("option t with value '%s'\n", optarg);
                 opts.text = optarg;
             } else {
-                std::cout << ("jprefix: error: No value parsed for option --text\n");
+                std::cerr << ("jprefix: error: No value parsed for option --text\n");
                 exit(1);
             }
             break;
@@ -125,6 +125,14 @@ JPrefixOptions parse_options( int argc, char **argv) {
     opts.hostname = get_hostname();
 
     return opts;
+}
+
+std::string usage() 
+{
+    return "jprefix [--text='text'] [--hostname] [FILENAME] [FILENAME...]\n" 
+           "    prepend text to each line from named files or STDIN\n"
+           "    --text=prepend specifies text to prepend to each line\n"
+           "    --hostname shows hostname on each line\n";
 }
 
 std::string myjoin( std::string joiner, std::vector<std::string> array ) 
