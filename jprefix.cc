@@ -73,8 +73,6 @@ JPrefixOptions parse_options( int argc, char **argv) {
     JPrefixOptions opts;    // sets all members to 0
 
     while (1) {
-        //int this_option_optind = optind ? optind : 1;   // where does 'optint' come from
-        //int this_option_optind = 1;   
         int option_index = 0;
         static struct option long_options[] = {
             {"text",       required_argument, NULL,  't' },
@@ -99,7 +97,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             }
             break;
 
-        case 'm':   // tiMestamp
+        case 'm':   // timestamp - m is for the m in timestamp because t is used
             opts.show_timestamp = 1;
             break;
         case 'u':   // utimestamps
@@ -142,7 +140,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
     return opts;
 }
 
-std::string get_usage() 
+const std::string get_usage() 
 {
     return "jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]\n"
            "    [FILENAME] [FILENAME...]\n" 
@@ -151,7 +149,7 @@ std::string get_usage()
            "    --hostname shows hostname on each line\n";
 }
 
-std::string myjoin( std::string joiner, std::vector<std::string> array ) 
+const std::string myjoin( std::string joiner, std::vector<std::string> array ) 
 {
     std::string str = "";
     for(unsigned int i=0; i<array.size(); i++) {
@@ -164,7 +162,7 @@ std::string myjoin( std::string joiner, std::vector<std::string> array )
     return str;
 }
 
-std::string get_hostname() 
+const std::string get_hostname() 
 {
     char hostname[1024] = {0};  // {0} means all bits set to 0 in whole array
     gethostname( hostname, 1023 );
@@ -172,7 +170,7 @@ std::string get_hostname()
     return std::string(hostname);
 }
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
-std::string get_date_time()
+const std::string get_date_time()
 {
     // from http://stackoverflow.com/questions/997946/how-to-get-current-time-and-date-in-c
     time_t     now = time(0);
@@ -186,7 +184,7 @@ std::string get_date_time()
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuu
-std::string get_date_utime()
+const std::string get_date_utime()
 {
     timeval curTime;
     gettimeofday(&curTime, NULL);
