@@ -8,8 +8,10 @@
 #include <sys/time.h>  /* for gettimeofday() */
 #include <string>      /* for std::string */
 #include <iostream>    /* for std::istream, cin, cout */
+#include <sstream>     /* for std::ostringstream */
 #include <vector>      /* for std::vector<type> */
 #include <fstream>     /* for std::ifstream */
+#include <iomanip>     /* for setprecision() */
         
 #include "jprefix.h"    /* header for this .cc */
 
@@ -71,8 +73,6 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
 // this code uses getopt_long() from the standard getopt.h library
 //  and is subject to its interface.
 JPrefixOptions parse_options( int argc, char **argv) {
-    int c;
-    
     JPrefixOptions opts;    // sets all members to 0
     while (1) {
         int option_index = 0;
@@ -86,7 +86,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {0,           0,                  0,  0 }
         };
 
-        c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
+        int c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
         // getopt_long() successively returns the option characters from the option elements.
         if (c == -1)    // this signals end of options to parse
             break;
@@ -155,7 +155,7 @@ const std::string get_usage()
            "    --hostname shows hostname on each line\n";
 }
 
-const std::string myjoin( std::string joiner, std::vector<std::string> array ) 
+const std::string myjoin( const std::string joiner, const std::vector<std::string> array ) 
 {
     std::string str = "";
     for(unsigned int i=0; i<array.size(); i++) {
@@ -201,11 +201,14 @@ const std::string get_date_utime()
 //  get_time_elapsed()
 const std::string get_time_elapsed() {
     timeval diff = get_time_elapsed_timeval();
-    double time = diff.tv_sec + (diff.tv_usec / 1000000);
+    //double time = diff.tv_sec + (diff.tv_usec / 1000000);
 
-    char diffstr[200] = {0}; // extra space for sure
-    snprintf(diffstr, 199, "%0.8lfs", time );
-    return diffstr;
+    //double ms = diff.tv_sec * 1000 + diff.tv_usec*1000000;
+
+    //char diffstr[200] = {0}; // extra space for sure
+    //snprintf(diffstr, 199, "%0.8lfs", ms );
+    //return diffstr;
+    return get_timeval_as_string( diff );
 }
 static timeval prevTime; // = {0};   // all bits 0
 const timeval get_time_elapsed_timeval()
@@ -226,24 +229,18 @@ const timeval get_time_elapsed_timeval()
     return diff;
 }
 
-int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y)
-{
-    double tx = x->tv_sec + (x->tv_usec / 100000.0);
-    double ty = y->tv_sec + (y->tv_usec / 100000.0);
-    std::cout << "Getting diff between " << tx << " and " << ty << "\n";
-    double diff = ty - tx;
-    result->tv_sec  = int(diff);
-    result->tv_usec = diff - int(diff) * 1000000;
-    return 0;
-}
 
 // from http://stackoverflow.com/questions/1858050/how-do-i-compare-two-timestamps-in-c
 
 /* Subtract the `struct timeval' values X and Y,
     storing the result in RESULT.
     Return 1 if the difference is negative, otherwise 0.  */
-int timeval_subtract2 (struct timeval *result, struct timeval *x, struct timeval *y)
+int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y)
 {
+
+    //dump_timeval( "before: ", *x);
+    //dump_timeval( "after: ", *y);
+
     /* Perform the carry for the later subtraction by updating y. */
     if (x->tv_usec < y->tv_usec) {
         int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
@@ -256,11 +253,28 @@ int timeval_subtract2 (struct timeval *result, struct timeval *x, struct timeval
         y->tv_sec -= nsec;
     }
 
+    //std::cout << "Getting diff between " << y->tv_sec << "(sec) and " << x->tv_sec << "(sec)\n";
     /* Compute the time remaining to wait.
     tv_usec is certainly positive. */
     result->tv_sec = x->tv_sec - y->tv_sec;
     result->tv_usec = x->tv_usec - y->tv_usec;
 
+    //dump_timeval( "result: ", *result);
+
     /* Return 1 if result is negative. */
     return x->tv_sec < y->tv_sec;
+}
+
+void dump_timeval( const std::string label, const timeval &t ) {
+    double sum = t.tv_sec + t.tv_usec/1000000.0;
+    std::cout << "timeval: " << label << ": sec: " << t.tv_sec << ", usec: " << t.tv_usec << " ( " << std::setprecision(6) << std::showpoint << std::fixed << sum << ")\n";
+}
+
+const std::string get_timeval_as_string (const timeval &t) 
+{
+    double sum = t.tv_sec + t.tv_usec/1000000.0;
+    std::ostringstream str;
+    //std::cout << "timeval: " << label << ": sec: " << t.tv_sec << ", usec: " << t.tv_usec << " ( " << std::setprecision(6) << std::showpoint << std::fixed << sum << ")\n";
+    str << std::setprecision(6) << std::showpoint << std::fixed << sum;
+    return str.str();
 }

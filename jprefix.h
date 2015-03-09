@@ -22,12 +22,14 @@ JPrefixOptions parse_options( int argc, char **argv);
 int copy_stream_prefixed (std::istream &in, JPrefixOptions opts);
 
 const std::string get_usage();
-const std::string myjoin( std::string joiner, std::vector<std::string> array );
+const std::string myjoin( const std::string joiner, const std::vector<std::string> array );
 const std::string get_hostname();
 const std::string get_date_time();
 const std::string get_date_utime();
 const std::string get_time_elapsed();
 const timeval get_time_elapsed_timeval();
 
-int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y);
-
+// returns sign, puts result in *result, modified *x and *y
+int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y); 
+void dump_timeval( const std::string label, const timeval &timeval );
+const std::string get_timeval_as_string (const timeval &t);
