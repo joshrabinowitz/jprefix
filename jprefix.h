@@ -11,7 +11,7 @@ struct JPrefixOptions {
     int show_hostname;      // should we show hostname
     int verbose;            // should we be verbose
 
-    JPrefixOptions() : show_hostname(0) {};
+    JPrefixOptions() : show_hostname(0) {}; // initialize show_hostname to 0 on construction
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
