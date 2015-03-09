@@ -22,7 +22,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {0,           0,                  0,  0 }
         };
 
-        int c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
+        int c = getopt_long(argc, argv, "t:hvmue", long_options, &option_index);
         // getopt_long() successively returns the option characters from the option elements.
         if (c == -1)    // this signals end of options to parse
             break;
