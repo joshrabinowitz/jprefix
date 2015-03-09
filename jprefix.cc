@@ -45,9 +45,10 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
             adds.push_back(opts.hostname);
         }
         std::string prefix = myjoin( " ", adds );
-        line = prefix + " " + line + "\n";
-        len += line.length();
-        std::cout << line;
+        std::string newline = prefix.length() ? (prefix + " ") : "";
+        newline += line + "\n";
+        len += newline.length();
+        std::cout << newline;
     }
     return len;
 }
