@@ -77,32 +77,24 @@ JPrefixOptions parse_options( int argc, char **argv) {
         //int this_option_optind = 1;   
         int option_index = 0;
         static struct option long_options[] = {
-            {"text",     required_argument, NULL,  't' },
-            {"hostname", no_argument,       NULL,  'h' },
-            {"verbose",  no_argument,       NULL,  'v' },
-            {"timestamp", no_argument,      NULL,  'm' },   // tiMestamp
+            {"text",       required_argument, NULL,  't' },
+            {"hostname",   no_argument,       NULL,  'h' },
+            {"verbose",    no_argument,       NULL,  'v' },
+            {"timestamp",  no_argument,      NULL,  'm' },   // tiMestamp
             {"utimestamp", no_argument,      NULL,  'u' },   // utimestamp
-            //{"add",     required_argument, 0,  0 },
-            //{"append",  no_argument,       0,  0 },
-            //{"delete",  required_argument, 0,  0 },
-            //{"verbose", no_argument,       0,  0 },
-            //{"create",  required_argument, 0, 'c'},
-            //{"file",    required_argument, 0,  0 },
-            {0,         0,                 0,  0 }
+            {0,           0,                 0,  0 }
         };
 
-       c = getopt_long(argc, argv, "thv", // "abc:d:012", // we're not sure what "t" means here, nor "abc:d:012"
-                 long_options, &option_index);
+        c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
         if (c == -1)
             break;
 
         switch (c) {
         case 't':   // text
             if(optarg) {
-                //printf("option t with value '%s'\n", optarg);
                 opts.text = optarg;
             } else {
-                std::cerr << ("jprefix: error: No value parsed for option --text\n");
+                std::cerr << ("jprefix: error: No value parsed for option --text\n") << get_usage();
                 exit(EXIT_FAILURE); 
             }
             break;
@@ -125,7 +117,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             break;
 
         case '?':
-            std::cout << get_usage() << std::endl;
+            std::cout << get_usage();
             exit(0);
             break;
 
