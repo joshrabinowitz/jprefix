@@ -1,16 +1,18 @@
 jprefix ChangeLog
 
-2015-03-08 14:08:23  0.30
+2015-03-08 21:51:19  v0.40
+	Implement usage output on errors and for -? option. 
+	Add ChangeLog file.
+
+2015-03-08 16:21:36  v0.30
 	Add ---hostname, --timestamp, and --utimestamp features.
 
-2015-03-08 14:08:23  0.21
-	Enable automake builds on osx
+2015-03-08 14:08:23  v0.21
+	Enable automake builds on osx.
 
-2015-03-08 13:45:01  0.20
-	Enable automake builds on linux
+2015-03-08 13:45:01  v0.20
+	Enable automake builds on linux.
 
-2015-03-08 12:34:56  0.10
-	First version, just allowed text to be passed via --text=prefix
+2015-03-08 12:34:56  v0.10
+	First version, just allowed text to be passed via --text=prefix.
 
-
-	
