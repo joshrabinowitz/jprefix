@@ -1,11 +1,8 @@
 # see http://inti.sourceforge.net/tutorial/libinti/autotoolsproject.html
-#SUBDIRS=src
-
+# and https://www.gnu.org/software/automake/manual/html_node/Use-TAP-with-the-Automake-test-harness.html#Use-TAP-with-the-Automake-test-harness
 bin_PROGRAMS = jprefix
 
-#AM_CXXFLAGS = $(INTI_CFLAGS)
-
 jprefix_SOURCES = jprefix.cc jprefix.h
-#jprefix_LDADD = $(INTI_LIBS)
 
+# this makes a test target for 'make check' (!)
 TESTS = test-jprefix.pl
