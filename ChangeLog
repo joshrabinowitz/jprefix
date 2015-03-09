@@ -2,6 +2,7 @@ jprefix ChangeLog
 
 2015-03-08 23:29:28  v0.50
 	Error reporting if we can't open passed filenames.
+	Improve handling of short command-line options.
 
 2015-03-08 21:51:19  v0.40
 	Implement usage output on errors and for -? option. 
