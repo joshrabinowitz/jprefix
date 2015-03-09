@@ -5,7 +5,7 @@ bin_PROGRAMS = jprefix
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html for explanations of warnings
 AM_CPPFLAGS = -Wall -Wextra
 
-jprefix_SOURCES = jprefix.cc jprefix.h
+jprefix_SOURCES = jprefix.cc jprefix.h jpdateutils.cc
 
 # this makes a test target for 'make check' (!)
 TESTS = test-jprefix.pl
