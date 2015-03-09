@@ -8,10 +8,9 @@
 #include <sys/time.h>  /* for gettimeofday() */
 #include <string>      /* for std::string */
 #include <iostream>    /* for std::istream, cin, cout */
-#include <sstream>     /* for std::ostringstream */
+//#include <sstream>     /* for std::ostringstream */
 #include <vector>      /* for std::vector<type> */
 #include <fstream>     /* for std::ifstream */
-#include <iomanip>     /* for setprecision() */
         
 #include "jprefix.h"    /* header for this .cc */
 #include "jpdateutils.h"    /* header for this jpdateutils.cc */
