@@ -4,24 +4,28 @@
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit() and perhaps gethostname() */
 #include <getopt.h>    /* for getopt_long() */
+#include <time.h>    /* for time() */
+#include <sys/time.h>    /* for gettimeofday() */
 #include <string>       /* for std::string */
 #include <iostream>     /* for std::istream, cin, cout */
 #include <vector>     /* for std::vector<type> */
 #include <fstream>     /* for std::ifstream */
+
         
 #include "jprefix.h"
 
 int
 main(int argc, char **argv)
 {
-    JPrefixOptions opts = parse_options( argc, argv);    // this may exit with error or not, with --help-like options. returns opts if successful
-    //std::cout << "text is " << opts.text << std::endl;
+    JPrefixOptions opts = parse_options( argc, argv);    
+    // this may exit with error (or without errors, if passed --help-like options.) 
+    // returns opts if successful
 
     int bytes = 0;
     if (opts.filenames.size() == 0) {
         bytes += copy_stream_prefixed( std::cin, opts );
     } else {
-        for (int i=0; i < opts.filenames.size(); i++) {
+        for (unsigned int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
             ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
             bytes += copy_stream_prefixed( ifs, opts );
@@ -38,12 +42,10 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
     int len = 0;
     while( getline( in, line ) ) {
         std::vector<std::string> adds;
-        if (opts.text.length() > 0) {
-            adds.push_back(opts.text);
-        }
-        if (opts.show_hostname) {
-            adds.push_back(opts.hostname);
-        }
+        if (opts.text.length() > 0) { adds.push_back(opts.text); }
+        if (opts.show_hostname) { adds.push_back(opts.hostname); }
+        if (opts.show_timestamp) { adds.push_back( get_date_time() ); }
+        if (opts.show_utimestamp) { adds.push_back( get_date_utime() ); }
         std::string prefix = myjoin( " ", adds );
         std::string newline = prefix.length() ? (prefix + " ") : "";
         newline += line + "\n";
@@ -67,6 +69,8 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {"text",     required_argument, NULL,  't' },
             {"hostname", no_argument,       NULL,  'h' },
             {"verbose",  no_argument,       NULL,  'v' },
+            {"timestamp", no_argument,      NULL,  'm' },   // tiMestamp
+            {"utimestamp", no_argument,      NULL,  'u' },   // utimestamp
             //{"add",     required_argument, 0,  0 },
             //{"append",  no_argument,       0,  0 },
             //{"delete",  required_argument, 0,  0 },
@@ -90,6 +94,13 @@ JPrefixOptions parse_options( int argc, char **argv) {
                 std::cerr << ("jprefix: error: No value parsed for option --text\n");
                 exit(1);
             }
+            break;
+
+        case 'm':   // tiMestamp
+            opts.show_timestamp = 1;
+            break;
+        case 'u':   // utimestamps
+            opts.show_utimestamp = 1;
             break;
 
         case 'h':   //  hostname
@@ -130,8 +141,9 @@ JPrefixOptions parse_options( int argc, char **argv) {
 
 std::string usage() 
 {
-    return "jprefix [--text='text'] [--hostname] [FILENAME] [FILENAME...]\n" 
-           "    prepend text to each line from named files or STDIN\n"
+    return "jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]\n"
+           "    [FILENAME] [FILENAME...]\n" 
+           "    prepend text or selected data to each line from named files or STDIN\n"
            "    --text=prepend specifies text to prepend to each line\n"
            "    --hostname shows hostname on each line\n";
 }
@@ -139,7 +151,7 @@ std::string usage()
 std::string myjoin( std::string joiner, std::vector<std::string> array ) 
 {
     std::string str = "";
-    for(int i=0; i<array.size(); i++) {
+    for(unsigned int i=0; i<array.size(); i++) {
         //std::cout << "jprefix: verbose: appending " << array[i] << std::endl;
         str += array[i];
         if(i < array.size() - 1) {
@@ -157,3 +169,34 @@ std::string get_hostname()
     //std::cout << "hostname is " << hostname << std::endl;
     return std::string(hostname);
 }
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss
+std::string get_date_time()
+{
+    // from http://stackoverflow.com/questions/997946/how-to-get-current-time-and-date-in-c
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[128];    // original example had buf[80]
+    tstruct = *localtime(&now); // not thread safe
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+    strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
+    return buf;
+}
+
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuu
+std::string get_date_utime()
+{
+   timeval curTime;
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
+
+    char buffer [80];
+    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+
+    char currentTime[84] = "";
+    sprintf(currentTime, "%s.%03d", buffer, milli);
+    //printf("current time: %s \n", currentTime); 
+    return currentTime;
+}
+
+

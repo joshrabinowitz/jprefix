@@ -8,10 +8,12 @@ struct JPrefixOptions {
     std::string hostname;   // hostname of machine
     std::vector<std::string> filenames; // filenames to show
 
-    int show_hostname;      // should we show hostname
-    int verbose;            // should we be verbose
+    bool show_hostname;      // should we show hostname
+    bool show_timestamp;      // should we show time
+    bool show_utimestamp;      // should we show time
+    bool verbose;            // should we be verbose
 
-    JPrefixOptions() : show_hostname(0) {}; // initialize show_hostname to 0 on construction
+    JPrefixOptions() : show_hostname(0), show_timestamp(0), show_utimestamp(0), verbose(0) {}; // initialize bools to 0 on construction
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
@@ -20,4 +22,6 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts);
 
 std::string myjoin( std::string joiner, std::vector<std::string> array );
 std::string get_hostname();
+std::string get_date_time();
+std::string get_date_utime();
 
