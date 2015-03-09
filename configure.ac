@@ -6,17 +6,13 @@
 PACKAGE=jprefix
 
 # initial info about project
-#AC_INIT(src/jprefix.cc)
 AC_INIT([jprefix],[0.1.0],[joshr])
 AC_CONFIG_SRCDIR([jprefix.cc],[jprefix.h])
 
 # check for C++ preprocessor and compiler
-#AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
-# automake initialization (mandatory) including a check for automake API version >= 1.9
-#AM_INIT_AUTOMAKE([1.9])
 #  below means "software does not conform to the typical gnu standards, 
 #              and thus omitting README (and NEWS AUTHORS and ChangeLog) is not an error"
 AM_INIT_AUTOMAKE([foreign])
@@ -28,6 +24,8 @@ AC_LANG([C++])
 AC_HEADER_STDC
 AC_CHECK_HEADERS([string])
 AC_CHECK_HEADERS([iostream])
+AC_CHECK_HEADERS([fstream])
+AC_CHECK_HEADERS([vector])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_SIZE_T
@@ -39,7 +37,6 @@ AC_SUBST([AM_LDFLAGS])
 
 # files to generate via autotools (prepare .am or .in source files)
 AC_CONFIG_FILES([Makefile])
-
 
 # finally this generates the Makefiles etc. for the build
 AC_OUTPUT
