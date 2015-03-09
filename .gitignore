@@ -11,6 +11,13 @@ depcomp
 install-sh
 missing
 
+# test artifacts
+test-driver
+test-jprefix.pl.log
+test-jprefix.pl.trs
+test-suite.log
+
+
 .deps
 Makefile
 Makefile.in
