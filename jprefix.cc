@@ -84,7 +84,8 @@ JPrefixOptions parse_options( int argc, char **argv) {
         };
 
         c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
-        if (c == -1)
+        // returns successively each of the option characters from each of the option elements.
+        if (c == -1)    // this signals end of options to parse
             break;
 
         switch (c) {
@@ -183,7 +184,7 @@ const std::string get_date_time()
     return buf;
 }
 
-// Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuu
+// Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuuuu
 const std::string get_date_utime()
 {
     timeval curTime;
