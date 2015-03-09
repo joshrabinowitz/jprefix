@@ -7,3 +7,5 @@ bin_PROGRAMS = jprefix
 
 jprefix_SOURCES = jprefix.cc jprefix.h
 #jprefix_LDADD = $(INTI_LIBS)
+
+TESTS = test-jprefix.pl
