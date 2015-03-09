@@ -1,4 +1,9 @@
 #include "jpdateutils.h"    /* header for this jpdateutils.cc */
+#include <stdio.h>     /* for snprintf */
+#include <iostream>    /* for std::istream, cin, cout */
+#include <iomanip>     /* for setprecision() */
+#include <sstream>     /* for std::ostringstream */
+
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string get_date_time()
 {

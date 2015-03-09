@@ -1,3 +1,5 @@
+#include <sys/time.h>   // for timeval
+#include <string>   // for std::string
 
 const std::string get_date_time();
 const std::string get_date_utime();
