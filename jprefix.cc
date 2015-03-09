@@ -20,14 +20,14 @@ main(int argc, char **argv)
     int bytes = 0;
     if (opts.filenames.size() == 0) {
         bytes += copy_stream_prefixed( std::cin, opts );
-        //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
     } else {
         for (int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
             ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
-            //bytes += copy_stream_prefixed( ifs, opts );
+            bytes += copy_stream_prefixed( ifs, opts );
         }
     }
+    //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
 
     exit(EXIT_SUCCESS);
 }
@@ -65,6 +65,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
         static struct option long_options[] = {
             {"text",     required_argument, NULL,  't' },
             {"hostname", no_argument,       NULL,  'h' },
+            {"verbose",  no_argument,       NULL,  'v' },
             //{"add",     required_argument, 0,  0 },
             //{"append",  no_argument,       0,  0 },
             //{"delete",  required_argument, 0,  0 },
@@ -74,7 +75,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {0,         0,                 0,  0 }
         };
 
-       c = getopt_long(argc, argv, "th", // "abc:d:012", // we're not sure what "t" means here, nor "abc:d:012"
+       c = getopt_long(argc, argv, "thv", // "abc:d:012", // we're not sure what "t" means here, nor "abc:d:012"
                  long_options, &option_index);
         if (c == -1)
             break;
@@ -85,7 +86,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
                 //printf("option t with value '%s'\n", optarg);
                 opts.text = optarg;
             } else {
-                std::cout << ("jprefix: error: No value parsed for option --text\n");
+                std::cerr << ("jprefix: error: No value parsed for option --text\n");
                 exit(1);
             }
             break;
@@ -93,6 +94,11 @@ JPrefixOptions parse_options( int argc, char **argv) {
         case 'h':   //  hostname
             //std::cout << "jprefix: verbose: show_hostname set to on\n";
             opts.show_hostname = 1;
+            break;
+
+        case 'v':   //  verbose
+            //std::cout << "jprefix: verbose: verbose set to on\n";
+            opts.verbose = 1;
             break;
 
         case '?':
@@ -107,16 +113,26 @@ JPrefixOptions parse_options( int argc, char **argv) {
     }
 
    if (optind < argc) {
-        printf("non-option ARGV-elements: ");
+        //printf("non-option ARGV-elements: ");
         while (optind < argc) {
             opts.filenames.push_back( argv[optind++] );
         }
-        std::cout << "jprefix: args: " << myjoin(" ", opts.filenames) << std::endl;
+        if (opts.verbose) {
+            std::cout << "jprefix: args: " << myjoin(" ", opts.filenames) << std::endl;
+        }
     }
     
     opts.hostname = get_hostname();
 
     return opts;
+}
+
+std::string usage() 
+{
+    return "jprefix [--text='text'] [--hostname] [FILENAME] [FILENAME...]\n" 
+           "    prepend text to each line from named files or STDIN\n"
+           "    --text=prepend specifies text to prepend to each line\n"
+           "    --hostname shows hostname on each line\n";
 }
 
 std::string myjoin( std::string joiner, std::vector<std::string> array ) 

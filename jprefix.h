@@ -6,10 +6,12 @@
 struct JPrefixOptions {
     std::string text;       // the arbitrary text to add to each line
     std::string hostname;   // hostname of machine
-    int show_hostname;      // should we show hostname
     std::vector<std::string> filenames; // filenames to show
 
-    JPrefixOptions() : show_hostname(0) {}
+    int show_hostname;      // should we show hostname
+    int verbose;            // should we be verbose
+
+    JPrefixOptions() : show_hostname(0) {}; // initialize show_hostname to 0 on construction
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
