@@ -58,6 +58,7 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
         if (opts.show_hostname) { parts.push_back(opts.hostname); }
         if (opts.show_timestamp) { parts.push_back( get_date_time() ); }
         if (opts.show_utimestamp) { parts.push_back( get_date_utime() ); }
+        if (opts.show_elapsed) { parts.push_back( get_time_elapsed() ); }
         std::string prefix = myjoin( " ", parts );
         std::string newline = prefix.length() ? (prefix + " ") : "";
         newline += line + "\n";
@@ -81,6 +82,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {"verbose",    no_argument,       NULL,  'v' },
             {"timestamp",  no_argument,       NULL,  'm' },   // tiMestamp
             {"utimestamp", no_argument,       NULL,  'u' },   // utimestamp
+            {"elapsed",    no_argument,       NULL,  'e' },   // utimestamp
             {0,           0,                  0,  0 }
         };
 
@@ -105,7 +107,9 @@ JPrefixOptions parse_options( int argc, char **argv) {
         case 'u':   // utimestamps
             opts.show_utimestamp = 1;
             break;
-
+        case 'e':   // elapsed
+            opts.show_elapsed = 1;
+            break;
         case 'h':   //  hostname
             //std::cout << "jprefix: verbose: show_hostname set to on\n";
             opts.show_hostname = 1;
@@ -194,3 +198,69 @@ const std::string get_date_utime()
     return currentTime;
 }
 
+//  get_time_elapsed()
+const std::string get_time_elapsed() {
+    timeval diff = get_time_elapsed_timeval();
+    double time = diff.tv_sec + (diff.tv_usec / 1000000);
+
+    char diffstr[200] = {0}; // extra space for sure
+    snprintf(diffstr, 199, "%0.8lfs", time );
+    return diffstr;
+}
+static timeval prevTime; // = {0};   // all bits 0
+const timeval get_time_elapsed_timeval()
+{
+    timeval curTime;
+    gettimeofday(&curTime, NULL);
+
+    timeval diff;
+    int sign = 0;
+    if (prevTime.tv_sec == 0) {
+       diff.tv_sec = 0;
+       diff.tv_usec = 0;
+    } else {
+        sign = timeval_subtract( &diff, &curTime, &prevTime );
+    }
+    prevTime.tv_sec = curTime.tv_sec;
+    prevTime.tv_usec = curTime.tv_usec;
+    return diff;
+}
+
+int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y)
+{
+    double tx = x->tv_sec + (x->tv_usec / 100000.0);
+    double ty = y->tv_sec + (y->tv_usec / 100000.0);
+    std::cout << "Getting diff between " << tx << " and " << ty << "\n";
+    double diff = ty - tx;
+    result->tv_sec  = int(diff);
+    result->tv_usec = diff - int(diff) * 1000000;
+    return 0;
+}
+
+// from http://stackoverflow.com/questions/1858050/how-do-i-compare-two-timestamps-in-c
+
+/* Subtract the `struct timeval' values X and Y,
+    storing the result in RESULT.
+    Return 1 if the difference is negative, otherwise 0.  */
+int timeval_subtract2 (struct timeval *result, struct timeval *x, struct timeval *y)
+{
+    /* Perform the carry for the later subtraction by updating y. */
+    if (x->tv_usec < y->tv_usec) {
+        int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
+        y->tv_usec -= 1000000 * nsec;
+        y->tv_sec += nsec;
+    }
+    if (x->tv_usec - y->tv_usec > 1000000) {
+        int nsec = (x->tv_usec - y->tv_usec) / 1000000;
+        y->tv_usec += 1000000 * nsec;
+        y->tv_sec -= nsec;
+    }
+
+    /* Compute the time remaining to wait.
+    tv_usec is certainly positive. */
+    result->tv_sec = x->tv_sec - y->tv_sec;
+    result->tv_usec = x->tv_usec - y->tv_usec;
+
+    /* Return 1 if result is negative. */
+    return x->tv_sec < y->tv_sec;
+}

@@ -9,11 +9,12 @@ struct JPrefixOptions {
     std::vector<std::string> filenames; // filenames to show
 
     bool show_hostname;      // should we show hostname
-    bool show_timestamp;      // should we show time
-    bool show_utimestamp;      // should we show time
+    bool show_timestamp;     // should we show time
+    bool show_utimestamp;    // should we show time
+    bool show_elapsed;       // should we show elapsed time
     bool verbose;            // should we be verbose
 
-    JPrefixOptions() : show_hostname(0), show_timestamp(0), show_utimestamp(0), verbose(0) {}; // initialize bools to 0 on construction
+    JPrefixOptions() : show_hostname(0), show_timestamp(0), show_utimestamp(0), show_elapsed(0), verbose(0) {}; // initialize bools to 0 on construction
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
@@ -25,4 +26,8 @@ const std::string myjoin( std::string joiner, std::vector<std::string> array );
 const std::string get_hostname();
 const std::string get_date_time();
 const std::string get_date_utime();
+const std::string get_time_elapsed();
+const timeval get_time_elapsed_timeval();
+
+int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval *y);
 
