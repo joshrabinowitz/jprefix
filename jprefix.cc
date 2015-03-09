@@ -188,14 +188,12 @@ const std::string get_date_utime()
 {
     timeval curTime;
     gettimeofday(&curTime, NULL);
-    int milli = curTime.tv_usec / 1000;
 
-    char buffer [128] = {0};  // extra
-    strftime(buffer, 127, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    char time_date[128] = {0};  // extra space, needs 80
+    strftime(time_date, 127, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-    char currentTime[200] = {0};
-    sprintf(currentTime, "%s.%03d", buffer, milli);
-    //printf("current time: %s \n", currentTime); 
+    char currentTime[200] = {0}; // extra space for sure
+    snprintf(currentTime, 199, "%s.%06ld", time_date, long(curTime.tv_usec) );
     return currentTime;
 }
 
