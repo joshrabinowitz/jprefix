@@ -52,12 +52,13 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
     std::string line;
     int len = 0;
     while( getline( in, line ) ) {
-        std::vector<std::string> adds;
-        if (opts.text.length() > 0) { adds.push_back(opts.text); }
-        if (opts.show_hostname) { adds.push_back(opts.hostname); }
-        if (opts.show_timestamp) { adds.push_back( get_date_time() ); }
-        if (opts.show_utimestamp) { adds.push_back( get_date_utime() ); }
-        std::string prefix = myjoin( " ", adds );
+        // sure, this is 'inefficient'... but usually overwhelmed by I/O speed
+        std::vector<std::string> parts;
+        if (opts.text.length() > 0) { parts.push_back(opts.text); }
+        if (opts.show_hostname) { parts.push_back(opts.hostname); }
+        if (opts.show_timestamp) { parts.push_back( get_date_time() ); }
+        if (opts.show_utimestamp) { parts.push_back( get_date_utime() ); }
+        std::string prefix = myjoin( " ", parts );
         std::string newline = prefix.length() ? (prefix + " ") : "";
         newline += line + "\n";
         len += newline.length();
@@ -66,25 +67,25 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
     return len;
 }
 
+// this code uses getopt_long() from the standard getopt.h library
+//  and is subject to its interface.
 JPrefixOptions parse_options( int argc, char **argv) {
     int c;
-    //int digit_optind = 0;   // used invisibly
     
     JPrefixOptions opts;    // sets all members to 0
-
     while (1) {
         int option_index = 0;
         static struct option long_options[] = {
             {"text",       required_argument, NULL,  't' },
             {"hostname",   no_argument,       NULL,  'h' },
             {"verbose",    no_argument,       NULL,  'v' },
-            {"timestamp",  no_argument,      NULL,  'm' },   // tiMestamp
-            {"utimestamp", no_argument,      NULL,  'u' },   // utimestamp
-            {0,           0,                 0,  0 }
+            {"timestamp",  no_argument,       NULL,  'm' },   // tiMestamp
+            {"utimestamp", no_argument,       NULL,  'u' },   // utimestamp
+            {0,           0,                  0,  0 }
         };
 
         c = getopt_long(argc, argv, "t:hvmu", long_options, &option_index);
-        // returns successively each of the option characters from each of the option elements.
+        // getopt_long() successively returns the option characters from the option elements.
         if (c == -1)    // this signals end of options to parse
             break;
 
