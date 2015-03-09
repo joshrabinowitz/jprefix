@@ -2,6 +2,8 @@
 # and https://www.gnu.org/software/automake/manual/html_node/Use-TAP-with-the-Automake-test-harness.html#Use-TAP-with-the-Automake-test-harness
 bin_PROGRAMS = jprefix
 
+AM_CPPFLAGS = -Wall -Wextra
+
 jprefix_SOURCES = jprefix.cc jprefix.h
 
 # this makes a test target for 'make check' (!)
