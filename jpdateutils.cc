@@ -30,13 +30,6 @@ const std::string get_date_utime()
 //  get_time_elapsed()
 const std::string get_time_elapsed() {
     timeval diff = get_time_elapsed_timeval();
-    //double time = diff.tv_sec + (diff.tv_usec / 1000000);
-
-    //double ms = diff.tv_sec * 1000 + diff.tv_usec*1000000;
-
-    //char diffstr[200] = {0}; // extra space for sure
-    //snprintf(diffstr, 199, "%0.8lfs", ms );
-    //return diffstr;
     return get_timeval_as_string( diff );
 }
 static timeval prevTime; // = {0};   // all bits 0
@@ -58,9 +51,7 @@ const timeval get_time_elapsed_timeval()
     return diff;
 }
 
-
 // from http://stackoverflow.com/questions/1858050/how-do-i-compare-two-timestamps-in-c
-
 /* Subtract the `struct timeval' values X and Y,
     storing the result in RESULT.
     Return 1 if the difference is negative, otherwise 0.  */
@@ -94,11 +85,7 @@ int timeval_subtract (struct timeval *result, struct timeval *x, struct timeval 
     return x->tv_sec < y->tv_sec;
 }
 
-void dump_timeval( const std::string label, const timeval &t ) {
-    double sum = t.tv_sec + t.tv_usec/1000000.0;
-    std::cout << "timeval: " << label << ": sec: " << t.tv_sec << ", usec: " << t.tv_usec << " ( " << std::setprecision(6) << std::showpoint << std::fixed << sum << ")\n";
-}
-
+// return timeval as a duration of seconds
 const std::string get_timeval_as_string (const timeval &t) 
 {
     double sum = t.tv_sec + t.tv_usec/1000000.0;
@@ -107,3 +94,10 @@ const std::string get_timeval_as_string (const timeval &t)
     str << std::setprecision(6) << std::showpoint << std::fixed << sum;
     return str.str();
 }
+
+// for debugging
+void dump_timeval( const std::string label, const timeval &t ) {
+    double sum = t.tv_sec + t.tv_usec/1000000.0;
+    std::cout << "timeval: " << label << ": sec: " << t.tv_sec << ", usec: " << t.tv_usec << " ( " << std::setprecision(6) << std::showpoint << std::fixed << sum << ")\n";
+}
+
