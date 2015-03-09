@@ -1,0 +1,16 @@
+jprefix ChangeLog
+
+2015-03-08 14:08:23  0.30
+	Add ---hostname, --timestamp, and --utimestamp features.
+
+2015-03-08 14:08:23  0.21
+	Enable automake builds on osx
+
+2015-03-08 13:45:01  0.20
+	Enable automake builds on linux
+
+2015-03-08 12:34:56  0.10
+	First version, just allowed text to be passed via --text=prefix
+
+
+	
