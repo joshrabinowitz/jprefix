@@ -1,20 +1,19 @@
 // c program to replicate prefix
 // first feature is implementation of --text option
 
+#include "jprefix.h"       /* header for this .cc */
+
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit() */
 #include <time.h>      /* for time() */
 #include <sys/time.h>  /* for gettimeofday() */
 #include <string>      /* for std::string */
 #include <iostream>    /* for std::istream, cin, cout */
-//#include <sstream>     /* for std::ostringstream */
 #include <vector>      /* for std::vector<type> */
 #include <fstream>     /* for std::ifstream */
         
-#include "jprefix.h"    /* header for this .cc */
-#include "jpdateutils.h"    /* header for jpdateutils.cc */
+#include "jpdateutils.h"   /* header for jpdateutils.cc */
 #include "jpstrutils.h"    /* header for jpstrutils.cc */
-//#include "jpopts.h"
 
 int
 main(int argc, char **argv)
