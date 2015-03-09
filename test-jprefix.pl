@@ -6,20 +6,21 @@ use strict;
 print "PASS: test1\n";
 
 my @tests = (
-      # "TEST COMMAND",                         "EXPECTED OUTPUT"
-    [ "echo x | ./jprefix --text y",            "y x" ],
-    [ "echo x | ./jprefix --text y --hostname", "y ln3.joshr.com x" ],
+        # "TEST COMMAND",                     , CMP , "EXPECTED OUTPUT"
+    [ "echo x | ./jprefix --text y",            "eq", "y x" ],
+    [ "echo x | ./jprefix --text y --hostname", "=~", 'y [\w\.]+ x' ],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
 
 my @results = ();
 for my $test (@tests) {
-    my ($cmd, $expected) = @$test;
+    my ($cmd, $cmp, $expected) = @$test;
     my $out = `$cmd`;
     chomp($out);
-    my $ok = $out eq $expected;
-    printf( "%s: got '$out', expected '$expected'\n", $ok ? "OK" : "NOT OK" );
+    my $ok;
+    eval "\$ok = \$out $cmp \$expected";
+    printf( "%s: ('$out' $cmp '$expected')\n", $ok ? "OK" : "NOT OK" );
     push(@results, $ok);
 }
 my @fails = grep { !$_ } @results;
