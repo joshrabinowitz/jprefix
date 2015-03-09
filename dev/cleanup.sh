@@ -10,9 +10,10 @@
 #README.md       config.status*      src/
 
 rm -f aclocal.m4 configure config.log config.status
-rm -rf autom4te.cache
+rm -rf autom4te.cache .deps
 rm -f depcomp install-sh compile missing
 rm -f Makefile Makefile.in  
 rm -f jprefix.o
+rm -f test-jprefix.pl*  test-suite.log  test-driver
 
 
