@@ -173,15 +173,11 @@ const std::string get_hostname()
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss
 const std::string get_date_time()
 {
-    // from http://stackoverflow.com/questions/997946/how-to-get-current-time-and-date-in-c
-    time_t     now = time(0);
-    struct tm  tstruct;
-    char       buf[128];    // original example had buf[80]
-    tstruct = *localtime(&now); // not thread safe
-    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
-    // for more information about date/time format
-    strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
-    return buf;
+    timeval curTime;
+    gettimeofday(&curTime, NULL);
+    char time_date[128] = {0};  // extra space, needs 80
+    strftime(time_date, 127, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    return time_date;
 }
 
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuuuu
@@ -189,7 +185,6 @@ const std::string get_date_utime()
 {
     timeval curTime;
     gettimeofday(&curTime, NULL);
-
     char time_date[128] = {0};  // extra space, needs 80
     strftime(time_date, 127, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
@@ -197,5 +192,4 @@ const std::string get_date_utime()
     snprintf(currentTime, 199, "%s.%06ld", time_date, long(curTime.tv_usec) );
     return currentTime;
 }
-
 
