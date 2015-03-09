@@ -1,7 +1,8 @@
 jprefix ChangeLog
 
-2014-03-09 01:37:13 v0.15
-	Started support for time --elapsed between lines.
+2014-03-09 01:37:13 v0.60
+	Added time --elapsed between lines.
+	Code reorg.
 
 2015-03-08 23:29:28  v0.50
 	Error reporting if we can't open passed filenames.
