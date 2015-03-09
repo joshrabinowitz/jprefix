@@ -8,7 +8,9 @@ print "PASS: test1\n";
 my @tests = (
         # "TEST COMMAND",                     , CMP , "EXPECTED OUTPUT"
     [ "echo x | ./jprefix --text y",            "eq", "y x" ],
-    [ "echo x | ./jprefix --text y --hostname", "=~", 'y [\w\.]+ x' ],
+    [ "echo x | ./jprefix --text y --hostname", "=~", 'y \S+ x' ],
+    [ "echo x | ./jprefix --text y --timestamp", "=~", 'y \S+ \S+ x' ],
+    [ "echo x | ./jprefix --text y --utimestamp", "=~", 'y \S+ \S+ x' ],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
