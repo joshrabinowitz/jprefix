@@ -5,9 +5,12 @@ use strict;
 #
 print "PASS: test1\n";
 
+# tests to compare output of jprefix with expected output
 my @tests = (
         # "TEST COMMAND",                     , CMP , "EXPECTED OUTPUT"
     [ "echo x | ./jprefix --text y",            "eq", "y x" ],
+    [ "echo x | ./jprefix --text ''",           "eq", "x" ],    # edge case
+    [ "echo x | ./jprefix --text ' '",          "eq", "  x" ],  # edge case
     [ "echo x | ./jprefix --text y --hostname", "=~", 'y \S+ x' ],
     [ "echo x | ./jprefix --text y --timestamp", "=~", 'y \S+ \S+ x' ],
     [ "echo x | ./jprefix --text y --utimestamp", "=~", 'y \S+ \S+ x' ],
