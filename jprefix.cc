@@ -114,7 +114,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
             break;
 
         case '?':
-            std::cout << ( "jprefix: SHOW USAGE\n" );
+            std::cout << get_usage() << std::endl;
             exit(0);
             break;
 
@@ -139,7 +139,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
     return opts;
 }
 
-std::string usage() 
+std::string get_usage() 
 {
     return "jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]\n"
            "    [FILENAME] [FILENAME...]\n" 
@@ -163,7 +163,6 @@ std::string myjoin( std::string joiner, std::vector<std::string> array )
 
 std::string get_hostname() 
 {
-    // GET HOSTNAME
     char hostname[1024] = {0};  // {0} means all bits set to 0 in whole array
     gethostname( hostname, 1023 );
     //std::cout << "hostname is " << hostname << std::endl;
@@ -186,14 +185,14 @@ std::string get_date_time()
 // Get current date/time, format is YYYY-MM-DD.HH:mm:ss.uuuu
 std::string get_date_utime()
 {
-   timeval curTime;
+    timeval curTime;
     gettimeofday(&curTime, NULL);
     int milli = curTime.tv_usec / 1000;
 
-    char buffer [80];
-    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    char buffer [128] = {0};  // extra
+    strftime(buffer, 127, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-    char currentTime[84] = "";
+    char currentTime[200] = {0};
     sprintf(currentTime, "%s.%03d", buffer, milli);
     //printf("current time: %s \n", currentTime); 
     return currentTime;
