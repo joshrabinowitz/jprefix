@@ -14,6 +14,6 @@ rm -rf autom4te.cache .deps
 rm -f depcomp install-sh compile missing
 rm -f Makefile Makefile.in  
 rm -f jprefix.o
-rm -f test-jprefix.pl*  test-suite.log  test-driver
+rm -f test-jprefix.pl.*  test-suite.log  test-driver
 
 
