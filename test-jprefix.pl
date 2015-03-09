@@ -7,17 +7,17 @@ print "PASS: test1\n";
 
 # tests to compare output of jprefix with expected output
 my @tests = (
-        # "test name",  "TEST COMMAND",                     , CMP , "EXPECTED OUTPUT"
-    [ "echo x | ./jprefix --text y",            "eq", "y x" ],
-    [ "echo x | ./jprefix --text=y",            "eq", "y x" ],
-    [ "echo x | ./jprefix --text ''",           "eq", "x" ],    # edge case
-    [ "echo x | ./jprefix --text ' '",          "eq", "  x" ],  # edge case
-    [ "echo x | ./jprefix --text y --hostname", "=~", '^y \S+ x$' ],
-    [ "echo x | ./jprefix --text y --timestamp", "=~", '^y \S+ \S+ x$' ],
-    [ "echo x | ./jprefix --text y --utimestamp", "=~", '^y \S+ \S+ x$' ],
+       # "TEST COMMAND",                          CMP,     "EXPECTED OUTPUT"
+    [ "echo x | ./jprefix --text y",              "eq",    "y x" ],
+    [ "echo x | ./jprefix --text=y",              "eq",    "y x" ],
+    [ "echo x | ./jprefix --text ''",             "eq",    "x" ],    # edge case
+    [ "echo x | ./jprefix --text ' '",            "eq",    "  x" ],  # edge case
+    [ "echo x | ./jprefix --text y --hostname",   "=~",    '^y \S+ x$' ],
+    [ "echo x | ./jprefix --text y --timestamp",  "=~",    '^y \S+ \S+ x$' ],
+    [ "echo x | ./jprefix --text y --utimestamp", "=~",    '^y \S+ \S+ x$' ],
 
-    [ "./jprefix README.md | head -1",            '=~', '^# jprefix$' ],
-    [ "./jprefix --text y README.md | head -1",   '=~', '^y # jprefix$' ],
+    [ "./jprefix README.md | head -1",            '=~',    '^# jprefix$' ],
+    [ "./jprefix --text y README.md | head -1",   '=~',    '^y # jprefix$' ],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
