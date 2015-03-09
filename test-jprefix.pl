@@ -6,7 +6,8 @@ use strict;
 print "PASS: test1\n";
 
 my @tests = (
-    [ "echo x | ./jprefix --text y", "y x" ],
+      # "TEST COMMAND",                         "EXPECTED OUTPUT"
+    [ "echo x | ./jprefix --text y",            "y x" ],
     [ "echo x | ./jprefix --text y --hostname", "y ln3.joshr.com x" ],
 );
 
@@ -21,6 +22,6 @@ for my $test (@tests) {
     printf( "%s: got '$out', expected '$expected'\n", $ok ? "OK" : "NOT OK" );
     push(@results, $ok);
 }
-my @fails = grep { $_ != 0 } @results;
+my @fails = grep { !$_ } @results;
 
-exit( @fails ? 1 : 0 );
+exit( scalar(@fails) ? 1 : 0 );
