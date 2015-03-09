@@ -20,6 +20,7 @@ JPrefixOptions parse_options( int argc, char **argv);
 
 int copy_stream_prefixed (std::istream &in, JPrefixOptions opts);
 
+std::string get_usage();
 std::string myjoin( std::string joiner, std::vector<std::string> array );
 std::string get_hostname();
 std::string get_date_time();
