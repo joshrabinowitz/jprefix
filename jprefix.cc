@@ -2,38 +2,49 @@
 // first feature is implementation of --text option
 
 #include <stdio.h>     /* for printf */
-#include <stdlib.h>    /* for exit() and perhaps gethostname() */
+#include <stdlib.h>    /* for exit() and gethostname() */
 #include <getopt.h>    /* for getopt_long() */
-#include <time.h>    /* for time() */
-#include <sys/time.h>    /* for gettimeofday() */
-#include <string>       /* for std::string */
-#include <iostream>     /* for std::istream, cin, cout */
-#include <vector>     /* for std::vector<type> */
+#include <time.h>      /* for time() */
+#include <sys/time.h>  /* for gettimeofday() */
+#include <string>      /* for std::string */
+#include <iostream>    /* for std::istream, cin, cout */
+#include <vector>      /* for std::vector<type> */
 #include <fstream>     /* for std::ifstream */
-
         
-#include "jprefix.h"
+#include "jprefix.h"    /* header for this .cc */
 
 int
 main(int argc, char **argv)
 {
     JPrefixOptions opts = parse_options( argc, argv);    
-    // this may exit with error (or without errors, if passed --help-like options.) 
-    // returns opts if successful
+    // parse_options() may exit with error (or without errors, if passed --help-like options).
+    // returns opts if successful.
 
-    int bytes = 0;
-    if (opts.filenames.size() == 0) {
+    int bytes = 0;  // count of bytes output
+    int num_errors = 0;
+    // no files passed; read data from stdin and prefix its lines
+    if (opts.filenames.size() == 0) {   
         bytes += copy_stream_prefixed( std::cin, opts );
-    } else {
+    } 
+    
+    // else open the files passed and prefix their lines
+    else {
         for (unsigned int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
             ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
-            bytes += copy_stream_prefixed( ifs, opts );
+            if (ifs.fail()) {
+                std::cerr << "jprefix: can't open file: " << opts.filenames[i] << std::endl;
+                num_errors++;
+            } else {
+                bytes += copy_stream_prefixed( ifs, opts );
+            }
         }
     }
-    //std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
+    if (opts.verbose) {
+        std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
+    }
 
-    exit(EXIT_SUCCESS);
+    exit( num_errors > 0 ? EXIT_FAILURE : EXIT_SUCCESS );
 }
 
 int copy_stream_prefixed (std::istream &in, JPrefixOptions opts) 
@@ -92,7 +103,7 @@ JPrefixOptions parse_options( int argc, char **argv) {
                 opts.text = optarg;
             } else {
                 std::cerr << ("jprefix: error: No value parsed for option --text\n");
-                exit(1);
+                exit(EXIT_FAILURE); 
             }
             break;
 
