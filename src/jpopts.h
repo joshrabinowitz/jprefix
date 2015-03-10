@@ -8,7 +8,7 @@ struct JPrefixOptions {
     std::vector<std::string> filenames; // filenames to show
 
     bool show_hostname;      // should we show hostname
-    bool show_timestamp;     // should we show time
+    bool show_timestamp;     // should we show time with subseconds
     bool show_utimestamp;    // should we show time
     bool show_elapsed;       // should we show elapsed time
     bool show_suffix;        // should we show the added text at the end
