@@ -1,4 +1,3 @@
-
 #include <string>
 #include <vector>      /* for std::vector<type> */
 
