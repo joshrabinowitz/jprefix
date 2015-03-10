@@ -1,7 +1,7 @@
 # jprefix
 command-line tool to prefix data to lines
 
-jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]
+  jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]
     [--suffix] [--quotes] [FILENAME] [FILENAME...]
     prepend text or selected data to each line from named files or STDIN
     --text=prepend specifies text to prepend to each line
