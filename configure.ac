@@ -7,7 +7,7 @@ PACKAGE=jprefix
 
 # initial info about project
 AC_INIT([jprefix],[0.65],[joshr])
-AC_CONFIG_SRCDIR([jprefix.cc],[jprefix.h])
+#AC_CONFIG_SRCDIR([src/jprefix.cc],[src/jprefix.h])
 
 # check for C++ preprocessor and compiler
 AC_PROG_CXX
@@ -43,9 +43,6 @@ AC_TYPE_SIZE_T
 AC_SUBST([AM_CXXFLAGS])
 AC_SUBST([AM_LDFLAGS])
 
-# files to generate via autotools (prepare .am or .in source files)
-AC_CONFIG_FILES([Makefile])
-
 # finally this generates the Makefiles etc. for the build
-AC_OUTPUT
+AC_OUTPUT(Makefile src/Makefile)
 
