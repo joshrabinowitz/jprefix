@@ -18,8 +18,12 @@ my @tests = (
     [ "echo A | src/jprefix -s -t B -u",            '=~',    '^A B \S+ \S+$' ],
     [ "echo A | src/jprefix --suffix --text B --utime",'=~', '^A B \S+ \S+$' ],
 
-    [ "src/jprefix README.md | head -1",            '=~',    '^# jprefix$' ],
-    [ "src/jprefix --text y README.md | head -1",   '=~',    '^y # jprefix$' ],
+    [ "echo B | src/jprefix --quotes",              "eq",    '"B"' ],
+    [ "echo B | src/jprefix --quotes --text A",     "eq",    'A "B"' ],
+    [ "echo B | src/jprefix --quotes --text A --suffix", "eq",    '"B" A' ],
+
+    [ "src/jprefix README.md | head -1",            'eq',    '# jprefix' ],
+    [ "src/jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
