@@ -19,10 +19,12 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {"timestamp",  no_argument,       NULL,  'm' },   // tiMestamp
             {"utimestamp", no_argument,       NULL,  'u' },   // utimestamp
             {"elapsed",    no_argument,       NULL,  'e' },   // elapsed time between lines
+            {"suffix",     no_argument,       NULL,  's' },   // elapsed time between lines
+            {"quotes",     no_argument,       NULL,  'q' },   // elapsed time between lines
             {0,           0,                  0,  0 }
         };
 
-        int c = getopt_long(argc, argv, "t:hvmue", long_options, &option_index);
+        int c = getopt_long(argc, argv, "t:hvmuesq", long_options, &option_index);
         // getopt_long() successively returns the option characters from the option elements.
         if (c == -1)    // this signals end of options to parse
             break;
@@ -45,6 +47,12 @@ JPrefixOptions parse_options( int argc, char **argv) {
             break;
         case 'e':   // elapsed
             opts.show_elapsed = 1;
+            break;
+        case 's':   // suffix
+            opts.show_suffix = 1;
+            break;
+        case 'q':   // quote
+            opts.show_quotes = 1;
             break;
         case 'h':   //  hostname
             //std::cout << "jprefix: verbose: show_hostname set to on\n";

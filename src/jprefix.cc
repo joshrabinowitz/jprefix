@@ -62,8 +62,17 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
         if (opts.show_utimestamp) { parts.push_back( get_date_utime() ); }
         if (opts.show_elapsed) { parts.push_back( get_time_elapsed() ); }
         std::string prefix = myjoin( " ", parts );
-        std::string newline = prefix.length() ? (prefix + " ") : "";
-        newline += line + "\n";
+        std::string newline;
+        if (opts.show_quotes) {
+            line = std::string("\"") + line + "\"";  // qoute the line data
+        }
+        if (opts.show_suffix) {
+            newline = line;
+            if (prefix.length()) { newline += " " + prefix; }
+        } else {
+            if (prefix.length()) { newline = prefix + " "; }
+            newline += line + "\n";
+        }
         len += newline.length();
         std::cout << newline;
     }

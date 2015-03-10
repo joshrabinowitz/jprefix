@@ -11,9 +11,12 @@ struct JPrefixOptions {
     bool show_timestamp;     // should we show time
     bool show_utimestamp;    // should we show time
     bool show_elapsed;       // should we show elapsed time
+    bool show_suffix;        // should we show the added text at the end
+    bool show_quotes;        // should we show the original line in quotes?
     bool verbose;            // should we be verbose
 
-    JPrefixOptions() : show_hostname(0), show_timestamp(0), show_utimestamp(0), show_elapsed(0), verbose(0) {}; // initialize bools to 0 on construction
+    JPrefixOptions() : // initialize bools to 0 on construction
+        show_hostname(0), show_timestamp(0), show_utimestamp(0), show_elapsed(0), show_suffix(0), show_quotes(0), verbose(0) {}; 
 };
 
 JPrefixOptions parse_options( int argc, char **argv);
