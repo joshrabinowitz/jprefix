@@ -1,8 +1,8 @@
 #include "jpopts.h"
 #include <getopt.h>    /* for getopt_long() */
 #include <stdlib.h>    /* for exit() */
-#include <iostream>    /* for std::istream, cin, cout */
 #include <stdio.h>     /* for printf */
+#include <iostream>    /* for std::istream, cin, cout */
 
 #include "jpstrutils.h" /* for get_hostname() */
 
@@ -19,59 +19,59 @@ JPrefixOptions parse_options( int argc, char **argv) {
             {"timestamp",  no_argument,       NULL,  'm' },   // tiMestamp
             {"utimestamp", no_argument,       NULL,  'u' },   // utimestamp
             {"elapsed",    no_argument,       NULL,  'e' },   // elapsed time between lines
-            {"suffix",     no_argument,       NULL,  's' },   // elapsed time between lines
-            {"quotes",     no_argument,       NULL,  'q' },   // elapsed time between lines
+            {"suffix",     no_argument,       NULL,  's' },   // show addl data at end, not start
+            {"quotes",     no_argument,       NULL,  'q' },   // show original line in quotes
             {0,           0,                  0,  0 }
         };
 
         int c = getopt_long(argc, argv, "t:hvmuesq", long_options, &option_index);
-        // getopt_long() successively returns the option characters from the option elements.
-        if (c == -1)    // this signals end of options to parse
-            break;
+        // getopt_long() successively returns the option characters from the option elements,
+        // keeping state in option_index.
+        
+        if (c == -1)    // this signals end of options to parse,
+            break;      // so break out of our 'while (1)' loop.
 
         switch (c) {
-        case 't':   // text
-            if(optarg) {
-                opts.text = optarg;
-            } else {
-                std::cerr << ("jprefix: error: No value parsed for option --text\n") << get_usage();
-                exit(EXIT_FAILURE); 
-            }
-            break;
+            case 't':   // text
+                if(optarg) {
+                    opts.text = optarg;
+                } else {
+                    std::cerr << ("jprefix: error: No value parsed for option --text\n") << get_usage();
+                    exit(EXIT_FAILURE); 
+                }
+                break;
 
-        case 'm':   // timestamp - m is for the m in timestamp because t is used
-            opts.show_timestamp = 1;
-            break;
-        case 'u':   // utimestamps
-            opts.show_utimestamp = 1;
-            break;
-        case 'e':   // elapsed
-            opts.show_elapsed = 1;
-            break;
-        case 's':   // suffix
-            opts.show_suffix = 1;
-            break;
-        case 'q':   // quote
-            opts.show_quotes = 1;
-            break;
-        case 'h':   //  hostname
-            //std::cout << "jprefix: verbose: show_hostname set to on\n";
-            opts.show_hostname = 1;
-            break;
+            case 'm':   // timestamp - m is for the m in timestamp because t is used
+                opts.show_timestamp = 1;
+                break;
+            case 'u':   // utimestamps
+                opts.show_utimestamp = 1;
+                break;
+            case 'e':   // elapsed
+                opts.show_elapsed = 1;
+                break;
+            case 's':   // suffix
+                opts.show_suffix = 1;
+                break;
+            case 'q':   // quote
+                opts.show_quotes = 1;
+                break;
+            case 'h':   //  hostname
+                opts.show_hostname = 1;
+                break;
 
-        case 'v':   //  verbose
-            //std::cout << "jprefix: verbose: verbose set to on\n";
-            opts.verbose = 1;
-            break;
+            case 'v':   //  verbose
+                opts.verbose = 1;
+                break;
 
-        case '?':
-            std::cout << get_usage();
-            exit(0);
-            break;
+            case '?':
+                std::cout << get_usage();
+                exit(0);
+                break;
 
-        default:
-            printf("jprefix: error: getopt returned character code 0%o (%c) ??\n", c, c);
-            exit(1);
+            default:
+                fprintf(stderr, "jprefix: error: getopt returned character code 0%o (%c) ??\n", c, c);
+                exit(1);
         }
     }
 
