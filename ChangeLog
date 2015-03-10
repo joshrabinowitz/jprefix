@@ -1,5 +1,8 @@
 jprefix ChangeLog
 
+2014-03-10 00:17:34  v0.67
+	Add tests.
+
 2014-03-09 19:46:53  v0.66
 	Add --quotes and --suffix features.
 
