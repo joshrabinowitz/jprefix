@@ -93,9 +93,13 @@ JPrefixOptions parse_options( int argc, char **argv) {
 const std::string get_usage() 
 {
     return "jprefix [--text='text'] [--hostname] [--timestamp] [--utimestamp]\n"
-           "    [FILENAME] [FILENAME...]\n" 
+           "    [--suffix] [--quotes] [FILENAME] [FILENAME...]\n" 
            "    prepend text or selected data to each line from named files or STDIN\n"
            "    --text=prepend specifies text to prepend to each line\n"
-           "    --hostname shows hostname on each line\n";
+           "    --hostname shows hostname on each line\n"
+           "    --timestamp shows time and date\n"
+           "    --utimestamp shows date and time with microseconds\n"
+           "    --suffix shows added data at end of line, not start\n"
+           "    --quotes shows original line in quotes\n";
 }
 
