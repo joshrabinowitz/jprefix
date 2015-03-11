@@ -1,7 +1,5 @@
 // header for jprefix.cc
-#include <string>
 #include <iostream>  /* for std::istream */
-#include <vector>    /* for vector<type> */
 #include "jpopts.h" /* for JPrefixOptoins */
 
 int main(int argc, char **argv);
