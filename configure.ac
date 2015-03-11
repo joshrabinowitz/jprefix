@@ -44,5 +44,5 @@ AC_SUBST([AM_CXXFLAGS])
 AC_SUBST([AM_LDFLAGS])
 
 # finally this generates the Makefiles etc. for the build
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT(Makefile)
 
