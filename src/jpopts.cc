@@ -1,3 +1,4 @@
+// option processing utils for jprefix.cc
 #include "jpopts.h"
 #include <getopt.h>    /* for getopt_long() */
 #include <stdlib.h>    /* for exit() */

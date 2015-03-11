@@ -1,5 +1,4 @@
-// c program to replicate prefix
-// first feature is implementation of --text option
+// c program to add data to lines read from stdin or named files
 
 #include "jprefix.h"       /* header for this .cc */
 

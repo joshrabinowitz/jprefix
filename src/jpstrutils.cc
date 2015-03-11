@@ -1,3 +1,4 @@
+// string utils for jprefix.cc
 #include "jpstrutils.h"
 #include <unistd.h>     /* for gethostname */
 

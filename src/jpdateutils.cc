@@ -1,3 +1,5 @@
+// date utils for jprefix.cc
+
 #include "jpdateutils.h"    /* header for this jpdateutils.cc */
 #include <stdio.h>     /* for snprintf */
 #include <iostream>    /* for std::istream, cin, cout */
