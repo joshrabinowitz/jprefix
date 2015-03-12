@@ -24,7 +24,7 @@ rm -f aclocal.m4 configure config.log config.status
 rm -rf autom4te.cache src/.deps
 rm -f depcomp install-sh compile missing
 rm -f Makefile Makefile.in  src/Makefile src/Makefile.in
-rm -f src/*.o src/.dirstamp src/jprefix
+rm -f src/*.o src/.dirstamp jprefix
 rm -f test/test-jprefix.pl.*  test-suite.log  test-driver
 
 
