@@ -10,6 +10,7 @@ config.status
 depcomp
 install-sh
 missing
+src/.dirstamp
 
 # test artifacts
 test-driver
