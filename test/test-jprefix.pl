@@ -39,15 +39,25 @@ for my $test (@tests) {
     my $ok;
     my ($cmd, $cmp, $expected) = @$test;
     chomp( my $out = `$cmd` );
+    my $desc = shorten_string( $cmd, 30 );
     if ($cmp eq "FAIL") {
         $ok = ($? || $!) ? 1 : 0;
-        printf( "%s: test$test_num (exit code expected, got exit code '$?')\n", $ok ? "PASS" : "FAIL" );
+        printf( "%s: test$test_num (exit code expected, got exit code '$?') # %s\n", $ok ? "PASS" : "FAIL", $desc );
     } else {
         eval "\$ok = \$out $cmp \$expected";
-        printf( "%s: test$test_num ('$out' $cmp '$expected')\n", $ok ? "PASS" : "FAIL" );
+        printf( "%s: test$test_num ('$out' $cmp '$expected') # '%s' \n", $ok ? "PASS" : "FAIL", $desc );
     }
     push(@results, $ok);
 }
 my @fails = grep { !$_ } @results;
 
 exit( scalar(@fails) ? 1 : 0 );
+
+sub shorten_string {
+    my ($str, $max) = @_;
+    $max ||= 30;
+    if (length($str) > $max) {
+        $str = substr( $str, 0, $max-3 ) . "...";
+    }
+    return $str;
+}
