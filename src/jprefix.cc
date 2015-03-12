@@ -34,7 +34,7 @@ main(int argc, char **argv)
             std::ifstream ifs;
             ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
             if (ifs.fail()) {
-                std::cerr << "jprefix: can't open file: " << opts.filenames[i] << std::endl;
+                std::cerr << "jprefix: error: can't open file: " << opts.filenames[i] << std::endl;
                 num_errors++;
             } else {
                 bytes += copy_stream_prefixed( ifs, opts );
