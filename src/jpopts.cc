@@ -66,8 +66,8 @@ JPrefixOptions parse_options( int argc, char **argv) {
                 break;
 
             case '?':   // unrecognized option
-                std::cout << "jprefix: unrecognized option\n";
-                std::cout << get_usage();
+                std::cerr << "jprefix: error: unrecognized option" << std::endl;
+                std::cerr << get_usage();
                 exit(1);
                 break;
 
