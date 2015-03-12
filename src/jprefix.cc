@@ -56,21 +56,19 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
         // sure, this is 'inefficient'... but usually overwhelmed by I/O speed
         std::vector<std::string> parts;
         if (opts.text.length() > 0) { parts.push_back(opts.text); }
-        if (opts.show_hostname) { parts.push_back(opts.hostname); }
-        if (opts.show_timestamp) { parts.push_back( get_date_time() ); }
-        if (opts.show_utimestamp) { parts.push_back( get_date_utime() ); }
-        if (opts.show_elapsed) { parts.push_back( get_time_elapsed() ); }
+        if (opts.show_hostname)     { parts.push_back(opts.hostname); }
+        if (opts.show_timestamp)    { parts.push_back( get_date_time() ); }
+        if (opts.show_utimestamp)   { parts.push_back( get_date_utime() ); }
+        if (opts.show_elapsed)      { parts.push_back( get_time_elapsed() ); }
         std::string prefix = myjoin( " ", parts );
         std::string newline;
         if (opts.show_quotes) {
             line = std::string("\"") + line + "\"";  // qoute the line data
         }
-        if (opts.show_suffix) {
-            newline = line;
-            if (prefix.length()) { newline += " " + prefix; }
+        if (prefix.length()) {
+            newline = opts.show_suffix ? (line + " " + prefix + "\n") : (prefix + " " + line + "\n");
         } else {
-            if (prefix.length()) { newline = prefix + " "; }
-            newline += line + "\n";
+            newline = line + "\n";
         }
         len += newline.length();
         std::cout << newline;
