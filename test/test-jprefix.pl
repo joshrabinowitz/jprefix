@@ -24,6 +24,8 @@ my @tests = (
 
     [ "src/jprefix README.md | head -1",            'eq',    '# jprefix' ],
     [ "src/jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
+
+    [ "src/jprefix --nonopt",                       'FAIL', '-'],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
@@ -32,11 +34,16 @@ my @results = ();
 my $test_num = 0;
 for my $test (@tests) {
     $test_num++;
+    my $ok;
     my ($cmd, $cmp, $expected) = @$test;
     chomp( my $out = `$cmd` );
-    my $ok;
-    eval "\$ok = \$out $cmp \$expected";
-    printf( "%s: test$test_num ('$out' $cmp '$expected')\n", $ok ? "PASS" : "FAIL" );
+    if ($cmp eq "FAIL") {
+        $ok = ($? || $!) ? 1 : 0;
+        printf( "%s: test$test_num (exit code expected, got '$?' ($!))\n", $ok ? "PASS" : "FAIL" );
+    } else {
+        eval "\$ok = \$out $cmp \$expected";
+        printf( "%s: test$test_num ('$out' $cmp '$expected')\n", $ok ? "PASS" : "FAIL" );
+    }
     push(@results, $ok);
 }
 my @fails = grep { !$_ } @results;
