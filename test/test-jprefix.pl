@@ -5,29 +5,29 @@ use strict;
 
 # tests to compare output of jprefix with expected output
 my @tests = (
-       # "TEST COMMAND",                          CMP,     "EXPECTED OUTPUT"
-    [ "echo x | ./jprefix --text y",              "eq",    "y x" ],
-    [ "echo x | ./jprefix --text=y",              "eq",    "y x" ],
-    [ "echo x | ./jprefix --text=y --suffix",     "eq",    "x y" ],
-    [ "echo x | ./jprefix --text ''",             "eq",    "x" ],    # edge case
-    [ "echo x | ./jprefix --text ' '",            "eq",    "  x" ],  # edge case
-    [ "echo x | ./jprefix --text y --hostname",   "=~",    '^y \S+ x$' ],
-    [ "echo x | ./jprefix --text y --timestamp",  "=~",    '^y \S+ \S+ x$' ],
-    [ "echo x | ./jprefix --text y --utimestamp", "=~",    '^y \S+ \S+ x$' ],
+     # "test name",          "TEST COMMAND",                          CMP,     "EXPECTED OUTPUT"
+    [ "simple prefix",       "echo x | ./jprefix --text y",              "eq",    "y x" ],
+    [ "option processing",   "echo x | ./jprefix --text=y",              "eq",    "y x" ],
+    [ "simple suffix",       "echo x | ./jprefix --text=y --suffix",     "eq",    "x y" ],
+    [ "prefix zero-length str", "echo x | ./jprefix --text ''",             "eq",    "x" ],    # edge case
+    [ "prefix space char",   "echo x | ./jprefix --text ' '",            "eq",    "  x" ],  # edge case
+    [ "hostname",            "echo x | ./jprefix --text y --hostname",   "=~",    '^y \S+ x$' ],
+    [ "timestamp",           "echo x | ./jprefix --text y --timestamp",  "=~",    '^y \S+ \S+ x$' ],
+    [ "utimestamp",          "echo x | ./jprefix --text y --utimestamp", "=~",    '^y \S+ \S+ x$' ],
 
-    [ "echo A | ./jprefix -s -t B -u",            '=~',    '^A B \S+ \S+$' ],
-    [ "echo A | ./jprefix --suffix --text B --utime",'=~', '^A B \S+ \S+$' ],
+    [ "short options",       "echo A | ./jprefix -s -t B -u",            '=~',    '^A B \S+ \S+$' ],
+    [ "long options",        "echo A | ./jprefix --suffix --text B --utime",'=~', '^A B \S+ \S+$' ],
 
-    [ "echo B | ./jprefix --quotes",              "eq",    '"B"' ],
-    [ "echo B | ./jprefix --quotes --text A",     "eq",    'A "B"' ],
-    [ "echo B | ./jprefix --quotes --text A --suffix", "eq",    '"B" A' ],
+    [ "just quote",          "echo B | ./jprefix --quotes",              "eq",    '"B"' ],
+    [ "quote and prefixe",   "echo B | ./jprefix --quotes --text A",     "eq",    'A "B"' ],
+    [ "quote and suffix",    "echo B | ./jprefix --quotes --text A --suffix", "eq",    '"B" A' ],
 
-    [ "./jprefix README.md | head -1",            'eq',    '# jprefix' ],
-    [ "./jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
+    [ "read named file",     "./jprefix README.md | head -1",            'eq',    '# jprefix' ],
+    [ "prefix line from file", "./jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
 
-    [ "echo 'a' | ./jprefix -v | tail -1",        '=~',    ' 2 bytes' ],
+    [ "verbose summary",      "echo 'a' | ./jprefix -v | tail -1",        '=~',    ' 2 bytes' ],
 
-    [ "./jprefix --nonopt 2> /dev/null",         'FAIL',  '-'],
+    [ "error code",           "./jprefix --nonopt 2> /dev/null",         'FAIL',  '-'],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
@@ -37,15 +37,18 @@ my $test_num = 0;
 for my $test (@tests) {
     $test_num++;
     my $ok;
-    my ($cmd, $cmp, $expected) = @$test;
+    my ($name, $cmd, $cmp, $expected) = @$test;
     chomp( my $out = `$cmd` );
     my $desc = shorten_string( $cmd, 30 );
+    #sub show {  # closure, has all params
+    #    printf( "%s: $test_num (exit code expected, got exit code '$?') # %s\n", $ok ? "ok" : "not ok", $desc );
+    #}
     if ($cmp eq "FAIL") {
         $ok = ($? || $!) ? 1 : 0;
-        printf( "%s: test$test_num (exit code expected, got exit code '$?') # %s\n", $ok ? "PASS" : "FAIL", $desc );
+        printf( "%s: $test_num $name (exit code expected, got exit code '$?') # %s\n", $ok ? "ok" : "not ok", $desc );
     } else {
         eval "\$ok = \$out $cmp \$expected";
-        printf( "%s: test$test_num ('$out' $cmp '$expected') # '%s' \n", $ok ? "PASS" : "FAIL", $desc );
+        printf( "%s: $test_num $name ('$out' $cmp '$expected') # '%s' \n", $ok ? "ok" : "not ok", $desc );
     }
     push(@results, $ok);
 }
