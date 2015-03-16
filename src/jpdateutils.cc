@@ -29,11 +29,16 @@ const std::string get_date_utime()
     return currentTime;
 }
 
-//  get_time_elapsed()
+//  get_time_elapsed(). Returns time duration since last called as a string
+//  returns 0 first time called
 const std::string get_time_elapsed() {
     timeval diff = get_time_elapsed_timeval();
     return get_timeval_as_string( diff );
 }
+
+
+
+// static var that stores when we were _last_ called
 static timeval prevTime; // = {0};   // all bits 0
 const timeval get_time_elapsed_timeval()
 {
@@ -42,13 +47,14 @@ const timeval get_time_elapsed_timeval()
 
     timeval diff;
     int sign = 0;
-    if (prevTime.tv_sec == 0) {
+    if (prevTime.tv_sec == 0) {     // first call to this function
        diff.tv_sec = 0;
        diff.tv_usec = 0;
     } else {
+        // not the first call to this function
         sign = timeval_subtract( &diff, &curTime, &prevTime );
     }
-    prevTime.tv_sec = curTime.tv_sec;
+    prevTime.tv_sec = curTime.tv_sec;   // set the prevTime
     prevTime.tv_usec = curTime.tv_usec;
     return diff;
 }
