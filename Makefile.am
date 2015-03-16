@@ -3,7 +3,7 @@
 bin_PROGRAMS = jprefix
 
 # see https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html for explanations of warnings
-AM_CPPFLAGS = -Wall -Wextra
+AM_CPPFLAGS = -Wall -Wextra  -std=c++11
 AUTOMAKE_OPTIONS = subdir-objects
 
 jprefix_SOURCES =  src/jprefix.cc src/jprefix.h  src/jpdateutils.cc src/jpdateutils.h  src/jpopts.cc src/jpopts.h  src/jpstrutils.cc src/jpstrutils.h
