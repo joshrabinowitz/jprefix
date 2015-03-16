@@ -5,11 +5,12 @@ use strict;
 
 # tests to compare output of jprefix with expected output
 my @tests = (
-     # "test name",          "TEST COMMAND",                          CMP,     "EXPECTED OUTPUT"
+     # "test name",          "TEST COMMAND",                          CMP,       "EXPECTED OUTPUT"
+     #                                                          (eq, =~, or FAIL)
     [ "simple prefix",       "echo x | ./jprefix --text y",              "eq",    "y x" ],
     [ "option processing",   "echo x | ./jprefix --text=y",              "eq",    "y x" ],
     [ "simple suffix",       "echo x | ./jprefix --text=y --suffix",     "eq",    "x y" ],
-    [ "prefix zero-length str", "echo x | ./jprefix --text ''",             "eq",    "x" ],    # edge case
+    [ "prefix empty str",    "echo x | ./jprefix --text ''",             "eq",    "x" ],    # edge case
     [ "prefix space char",   "echo x | ./jprefix --text ' '",            "eq",    "  x" ],  # edge case
     [ "hostname",            "echo x | ./jprefix --text y --hostname",   "=~",    '^y \S+ x$' ],
     [ "timestamp",           "echo x | ./jprefix --text y --timestamp",  "=~",    '^y \S+ \S+ x$' ],
@@ -19,11 +20,11 @@ my @tests = (
     [ "long options",        "echo A | ./jprefix --suffix --text B --utime",'=~', '^A B \S+ \S+$' ],
 
     [ "just quote",          "echo B | ./jprefix --quotes",              "eq",    '"B"' ],
-    [ "quote and prefixe",   "echo B | ./jprefix --quotes --text A",     "eq",    'A "B"' ],
-    [ "quote and suffix",    "echo B | ./jprefix --quotes --text A --suffix", "eq",    '"B" A' ],
+    [ "quote and prefix",    "echo B | ./jprefix --quotes --text A",     "eq",    'A "B"' ],
+    [ "quote and suffix",    "echo B | ./jprefix --quotes --text A --suffix", "eq", '"B" A' ],
 
     [ "read named file",     "./jprefix README.md | head -1",            'eq',    '# jprefix' ],
-    [ "prefix line from file", "./jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
+    [ "prefix from file",    "./jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
 
     [ "verbose summary",      "echo 'a' | ./jprefix -v | tail -1",        '=~',    ' 2 bytes' ],
 
