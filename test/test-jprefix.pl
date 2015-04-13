@@ -23,12 +23,12 @@ my @tests = (
     [ "quote and prefix",    "echo B | ./jprefix --quotes --text A",     "eq",    'A "B"' ],
     [ "quote and suffix",    "echo B | ./jprefix --quotes --text A --suffix", "eq", '"B" A' ],
 
-    [ "read named file",     "./jprefix README.md | head -1",            'eq',    '# jprefix' ],
-    [ "prefix from file",    "./jprefix --text y README.md | head -1",   'eq',    'y # jprefix' ],
+    [ "read named file",     "./jprefix test/test-file.txt | head -1",            'eq',    '# jprefix' ],
+    [ "prefix from file",    "./jprefix --text y test/test-file.txt | head -1",   'eq',    'y # jprefix' ],
 
     [ "verbose summary",      "echo 'a' | ./jprefix -v | tail -1",        '=~',    ' 2 bytes' ],
 
-    [ "error code",           "./jprefix --nonopt 2> /dev/null",         'FAIL',  '-'],
+    [ "bad option",           "./jprefix --nonopt 2> /dev/null",         'FAIL',  '-'],
 );
 
 print "1.." . scalar(@tests) . "\n";    # TAP header
@@ -40,7 +40,8 @@ for my $test (@tests) {
     my $ok;
     my ($name, $cmd, $cmp, $expected) = @$test;
     chomp( my $out = `$cmd` );
-    my $desc = shorten_string( $cmd, 30 );
+    #my $desc = shorten_string( $cmd, 30 );
+    my $desc = $cmd;
     #sub show {  # closure, has all params
     #    printf( "%s: $test_num (exit code expected, got exit code '$?') # %s\n", $ok ? "ok" : "not ok", $desc );
     #}
