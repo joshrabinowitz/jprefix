@@ -9,9 +9,12 @@
 
 // this code uses getopt_long() from the standard getopt.h library
 //  and is subject to its interface.
+//
+// returns JPrefixOptions on success, exit(1)'s with error to stderr on error.
 JPrefixOptions parse_options( int argc, char **argv) {
     JPrefixOptions opts;    // sets all members to 0
-    while (1) {
+    int keep_going = 1;
+    while (keep_going) {
         int option_index = 0;
         static struct option long_options[] = {
             {"text",       required_argument, NULL,  't' },
@@ -29,54 +32,56 @@ JPrefixOptions parse_options( int argc, char **argv) {
         // getopt_long() successively returns the option characters from the option elements,
         // keeping state in option_index.
         
-        if (c == -1)    // this signals end of options to parse,
-            break;      // so break out of our 'while (1)' loop.
+        if (c == -1) {   // this signals end of options to parse,
+            keep_going = 0;      // so break out of our 'while (1)' loop.
+        } else {
+            switch (c) {
+                case 't':   // text
+                    if(optarg) {
+                        opts.text = optarg;
+                    } else {
+                        std::cerr << ("jprefix: error: No value parsed for option --text\n") << get_usage();
+                        exit(EXIT_FAILURE); 
+                    }
+                    break;
 
-        switch (c) {
-            case 't':   // text
-                if(optarg) {
-                    opts.text = optarg;
-                } else {
-                    std::cerr << ("jprefix: error: No value parsed for option --text\n") << get_usage();
-                    exit(EXIT_FAILURE); 
-                }
-                break;
+                case 'm':   // timestamp - m is for the m in timestamp because t is used
+                    opts.show_timestamp = 1;
+                    break;
+                case 'u':   // utimestamps
+                    opts.show_utimestamp = 1;
+                    break;
+                case 'e':   // elapsed
+                    opts.show_elapsed = 1;
+                    break;
+                case 's':   // suffix
+                    opts.show_suffix = 1;
+                    break;
+                case 'q':   // quote
+                    opts.show_quotes = 1;
+                    break;
+                case 'h':   //  hostname
+                    opts.show_hostname = 1;
+                    break;
 
-            case 'm':   // timestamp - m is for the m in timestamp because t is used
-                opts.show_timestamp = 1;
-                break;
-            case 'u':   // utimestamps
-                opts.show_utimestamp = 1;
-                break;
-            case 'e':   // elapsed
-                opts.show_elapsed = 1;
-                break;
-            case 's':   // suffix
-                opts.show_suffix = 1;
-                break;
-            case 'q':   // quote
-                opts.show_quotes = 1;
-                break;
-            case 'h':   //  hostname
-                opts.show_hostname = 1;
-                break;
+                case 'v':   //  verbose
+                    opts.verbose = 1;
+                    break;
 
-            case 'v':   //  verbose
-                opts.verbose = 1;
-                break;
+                case '?':   // unrecognized option
+                    std::cerr << "jprefix: error: unrecognized option" << std::endl;
+                    std::cerr << get_usage();
+                    exit(1);
+                    break;
 
-            case '?':   // unrecognized option
-                std::cerr << "jprefix: error: unrecognized option" << std::endl;
-                std::cerr << get_usage();
-                exit(1);
-                break;
-
-            default:
-                fprintf(stderr, "jprefix: error: getopt returned character code 0%o (%c) ??\n", c, c);
-                exit(1);
+                default:
+                    fprintf(stderr, "jprefix: error: getopt returned character code 0%o (%c) ??\n", c, c);
+                    exit(1);
+            }
         }
     }
 
+    // all remaining arguments are assumed to be filenames to read from
    if (optind < argc) {
         //printf("non-option ARGV-elements: ");
         while (optind < argc) {
