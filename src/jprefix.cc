@@ -45,7 +45,7 @@ main(int argc, char **argv)
         std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
     }
 
-    exit( num_errors > 0 ? EXIT_FAILURE : EXIT_SUCCESS );
+    exit( num_errors > 0 ? EXIT_FAILURE : EXIT_SUCCESS );   // constants from stdlib.h
 }
 
 int copy_stream_prefixed (std::istream &in, JPrefixOptions opts) 
