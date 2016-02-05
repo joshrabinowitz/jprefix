@@ -31,6 +31,7 @@ const std::string get_date_utime()
 
 //  get_time_elapsed(). Returns time duration since last called as a string
 //  returns 0 first time called
+//  Not thread safe but that's ok because this program doesn't use threads.
 const std::string get_time_elapsed() {
     timeval diff = get_time_elapsed_timeval();
     return get_timeval_as_string( diff );
