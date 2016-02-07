@@ -1,7 +1,7 @@
 jprefix ChangeLog
 
-2016-00000000000000  v0.68
-	Add comment. Fix dates in ChangeLog.
+2016-02-07 10:12:41  v0.68
+	Add comments, code cleanup. Fix dates in ChangeLog.
 
 2015-03-10 00:17:34  v0.67
 	Add tests, don't use recursive makefiles.
