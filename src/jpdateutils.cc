@@ -40,7 +40,8 @@ const std::string get_time_elapsed() {
 
 
 // static var that stores when we were _last_ called
-static timeval prevTime; // = {0};   // all bits 0
+//  Not thread safe but that's ok because this program doesn't use threads.
+static timeval prevTime; 					// all bits start at 0
 const timeval get_time_elapsed_timeval()
 {
     timeval curTime;
@@ -53,7 +54,7 @@ const timeval get_time_elapsed_timeval()
        diff.tv_usec = 0;
     } else {
         // not the first call to this function
-        sign = timeval_subtract( &diff, &curTime, &prevTime );
+        sign = timeval_subtract( &diff, &curTime, &prevTime );	// 1 means negative
     }
     prevTime.tv_sec = curTime.tv_sec;   // set the prevTime
     prevTime.tv_usec = curTime.tv_usec;

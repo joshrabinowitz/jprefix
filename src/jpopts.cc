@@ -81,7 +81,8 @@ JPrefixOptions parse_options( int argc, char **argv) {
         }
     }
 
-    // all remaining arguments are assumed to be filenames to read from
+   // all remaining arguments are assumed to be filenames to read from argv
+   // 'optind' springs into existence from getopt.h
    if (optind < argc) {
         //printf("non-option ARGV-elements: ");
         while (optind < argc) {

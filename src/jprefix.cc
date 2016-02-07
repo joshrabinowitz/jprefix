@@ -23,16 +23,16 @@ main(int argc, char **argv)
 
     int bytes = 0;  // count of bytes output
     int num_errors = 0;
+
     // no files passed; read data from stdin and prefix its lines
     if (opts.filenames.size() == 0) {   
         bytes += copy_stream_prefixed( std::cin, opts );
     } 
-    
-    // else open the files passed and prefix their lines
+    // else open the files passed and prefix/suffix their lines
     else {
         for (unsigned int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
-            ifs.open( opts.filenames[i].c_str(),  std::fstream::in );
+            ifs.open( opts.filenames[i].c_str(), std::fstream::in );
             if (ifs.fail()) {
                 std::cerr << "jprefix: error: can't open file: " << opts.filenames[i] << std::endl;
                 num_errors++;
@@ -41,6 +41,8 @@ main(int argc, char **argv)
             }
         }
     }
+
+
     if (opts.verbose) {
         std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
     }
