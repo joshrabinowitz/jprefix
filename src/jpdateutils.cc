@@ -31,7 +31,6 @@ const std::string get_date_utime()
 
 //  get_time_elapsed(). Returns time duration since last called as a string
 //  returns 0 first time called
-//  Not thread safe but that's ok because this program doesn't use threads.
 const std::string get_time_elapsed() {
     timeval diff = get_time_elapsed_timeval();
     return get_timeval_as_string( diff );
@@ -100,7 +99,6 @@ const std::string get_timeval_as_string (const timeval &t)
 {
     double sum = t.tv_sec + t.tv_usec/1000000.0;
     std::ostringstream str;
-    //std::cout << "timeval: " << label << ": sec: " << t.tv_sec << ", usec: " << t.tv_usec << " ( " << std::setprecision(6) << std::showpoint << std::fixed << sum << ")\n";
     str << std::setprecision(6) << std::showpoint << std::fixed << sum;
     return str.str();
 }
