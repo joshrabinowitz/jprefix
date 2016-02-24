@@ -6,7 +6,7 @@
 PACKAGE=jprefix
 
 # initial info about project
-AC_INIT([jprefix],[0.68],[joshr])
+AC_INIT([jprefix],[0.69],[joshr])
 #AC_CONFIG_SRCDIR([src/jprefix.cc],[src/jprefix.h])
 
 # check for C++ preprocessor and compiler

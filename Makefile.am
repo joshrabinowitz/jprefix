@@ -6,6 +6,7 @@ bin_PROGRAMS = jprefix
 AM_CPPFLAGS = -Wall -Wextra
 AUTOMAKE_OPTIONS = subdir-objects
 
-jprefix_SOURCES =  src/jprefix.cc src/jprefix.h  src/jpdateutils.cc src/jpdateutils.h  src/jpopts.cc src/jpopts.h  src/jpstrutils.cc src/jpstrutils.h
+jprefix_SOURCES =  src/jprefix.cc src/jprefix.h  src/jpdateutils.cc src/jpdateutils.h  \
+				   src/jpopts.cc src/jpopts.h  src/jposutils.h src/jposutils.cc src/jpstrutils.cc src/jpstrutils.h
 
 TESTS = test/test-jprefix.pl

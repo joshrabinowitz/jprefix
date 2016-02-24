@@ -5,7 +5,8 @@
 #include <stdio.h>     /* for printf */
 #include <iostream>    /* for std::istream, cin, cout */
 
-#include "jpstrutils.h" /* for get_hostname() */
+#include "jpstrutils.h" /* for myjoin() */
+#include "jposutils.h" /* for get_hostname() */
 
 // this code uses getopt_long() from the standard getopt.h library
 //  and is subject to its interface.
