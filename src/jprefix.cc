@@ -26,7 +26,7 @@ main(int argc, char **argv)
 
     // no files passed; read data from stdin and prefix its lines
     if (opts.filenames.size() == 0) {   
-        bytes += copy_stream_prefixed( std::cin, opts );
+        bytes += copy_stream_prefixed( std::cin, std::cout, opts );
     } 
     // else open the files passed and prefix/suffix their lines
     else {
@@ -37,7 +37,7 @@ main(int argc, char **argv)
                 std::cerr << "jprefix: error: can't open file: " << opts.filenames[i] << std::endl;
                 num_errors++;
             } else {
-                bytes += copy_stream_prefixed( ifs, opts );
+                bytes += copy_stream_prefixed( ifs, std::cout, opts );
             }
         }
     }
@@ -50,7 +50,7 @@ main(int argc, char **argv)
     exit( num_errors > 0 ? EXIT_FAILURE : EXIT_SUCCESS );   // constants from stdlib.h
 }
 
-int copy_stream_prefixed (std::istream &in, JPrefixOptions opts) 
+int copy_stream_prefixed (std::istream &in, std::ostream &out, JPrefixOptions opts) 
 {
     std::string line;
     int len = 0;
@@ -65,7 +65,7 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
         std::string prefix = myjoin( " ", parts );
         std::string newline;
         if (opts.show_quotes) {
-            line = std::string("\"") + line + "\"";  // qoute the line data
+            line = std::string("\"") + line + "\"";
         }
         if (prefix.length()) {
             newline = opts.show_suffix ? (line + " " + prefix + "\n") : (prefix + " " + line + "\n");
@@ -73,7 +73,7 @@ int copy_stream_prefixed (std::istream &in, JPrefixOptions opts)
             newline = line + "\n";
         }
         len += newline.length();
-        std::cout << newline;
+        out << newline;
     }
     return len;
 }

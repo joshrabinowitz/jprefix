@@ -3,5 +3,5 @@
 #include "jpopts.h" /* for JPrefixOptoins */
 
 int main(int argc, char **argv);
-int copy_stream_prefixed (std::istream &in, JPrefixOptions opts);
+int copy_stream_prefixed (std::istream &in, std::ostream &out, JPrefixOptions opts);
 
