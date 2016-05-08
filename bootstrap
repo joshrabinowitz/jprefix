@@ -1,3 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env perl
 
-aclocal && automake --add-missing && autoconf
+use strict;
+use warnings;
+use Getopt::Long; 
+use File::Basename;
+
+my $prog = basename($0);
+my $verbose;
+my $coverage = 0;
+my $all = 0;
+my $dryrun;
+
+# Usage() : returns usage information
+sub Usage {
+    "$prog [--verbose] [--coverage] [--all] [--dryrun]\n";
+}
+
+# call main()
+main();
+
+# main()
+sub main {
+    GetOptions(
+        "verbose!" => \$verbose,
+        "coverage!" => \$coverage,
+        "all!"     => \$all,
+        "dryrun!" => \$dryrun,
+    ) or die Usage();
+
+    mysystem("aclocal && automake --add-missing && autoconf");
+
+    if($all) {
+        my $config_opts = $coverage ? "--enable-coverage" : "";
+        mysystem("./configure $config_opts && make clean all check" );
+    }
+}
+
+sub mysystem {
+    print "$prog: Running '@_'\n" if $verbose;
+    unless($dryrun) { 
+        system( @_ ) && die "$prog: Error running: @_";
+    }   
+}
+
