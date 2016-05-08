@@ -7,7 +7,6 @@ PACKAGE=jprefix
 
 # initial info about project
 AC_INIT([jprefix],[0.69],[joshr])
-#AC_CONFIG_SRCDIR([src/jprefix.cc],[src/jprefix.h])
 
 # check for C++ preprocessor and compiler
 AC_PROG_CXX
@@ -18,8 +17,11 @@ AC_PROG_CXXCPP
 #                         is not an error"
 AM_INIT_AUTOMAKE([foreign])
 
+
+
 # use the C++ compiler for following checks
 AC_LANG([C++])
+
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -43,6 +45,12 @@ AC_TYPE_SIZE_T
 AC_SUBST([AM_CXXFLAGS])
 AC_SUBST([AM_LDFLAGS])
 
+#AC_MSG_CHECKING([whether to enable code coverage])
+#AC_ARG_ENABLE(coverage,
+#              [  --enable-coverage  Enable coverage reports],
+#              [-fcoverage-mapping ])
+
+              #[CFLAGS="$CFLAGS -fprofile-arcs -fcoverage-mapping" -fcoverage-mapping ])
 # finally this generates the Makefiles etc. for the build
 AC_OUTPUT(Makefile)
 
