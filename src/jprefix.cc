@@ -28,7 +28,7 @@ main(int argc, char **argv)
     if (opts.filenames.size() == 0) {   
         bytes += copy_stream_prefixed( std::cin, std::cout, opts );
     } 
-    // else open the files passed and prefix/suffix their lines
+    // else open the files passed and prefix/suffix their lines to stdout
     else {
         for (unsigned int i=0; i < opts.filenames.size(); i++) {
             std::ifstream ifs;
@@ -41,7 +41,6 @@ main(int argc, char **argv)
             }
         }
     }
-
 
     if (opts.verbose) {
         std::cout << "jprefix: printed " << bytes << " bytes to stdout" << std::endl;
