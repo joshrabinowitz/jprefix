@@ -1,0 +1,9 @@
+language: cpp
+
+compiler:
+  - g++
+
+before_script:
+  - pwd 
+
+script: pwd && ls -l && ./bootstrap && ./configure && make && make check && make test
